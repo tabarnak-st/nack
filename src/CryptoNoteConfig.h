@@ -27,7 +27,7 @@ const uint64_t CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE           = 10;
 
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW             = 30;
 
-const uint64_t MONEY_SUPPLY                                  = (uint64_t)(-1);
+const uint64_t MONEY_SUPPLY                                  = (UINT64_C(5000000);
 
 const size_t   CRYPTONOTE_REWARD_BLOCKS_WINDOW               = 100;
 const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE     = 100000; //size of block (bytes) after which reward for block calculated using block size
@@ -47,8 +47,8 @@ const size_t   DIFFICULTY_LAG                                = 1;
 static_assert(2 * DIFFICULTY_CUT <= DIFFICULTY_WINDOW - 2, "Bad DIFFICULTY_WINDOW or DIFFICULTY_CUT");
 
 const uint64_t DEPOSIT_MIN_AMOUNT                            = 1 * COIN;
-const uint32_t DEPOSIT_MIN_TERM                              = 22000; //~1 month
-const uint32_t DEPOSIT_MAX_TERM                              = 1 * 12 * 22000; //~1 year
+const uint32_t DEPOSIT_MIN_TERM                              = 12000; //~1 month
+const uint32_t DEPOSIT_MAX_TERM                              = 1 * 12 * 12000; //~1 year
 const uint64_t DEPOSIT_MIN_TOTAL_RATE_FACTOR                 = 0; //rate is constant
 const uint64_t DEPOSIT_MAX_TOTAL_RATE                        = 15; //percentage rate for DEPOSIT_MAX_TERM
 static_assert(DEPOSIT_MIN_TERM > 0, "Bad DEPOSIT_MIN_TERM");
