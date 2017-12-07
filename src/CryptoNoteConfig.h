@@ -95,7 +95,7 @@ const uint64_t MAX_BLOCK_REWARD                              = (UINT64_C(10) * p
 const uint64_t REWARD_INCREASE_INTERVAL                      = (UINT64_C(264000));
 
 const char     CRYPTONOTE_NAME[]                             = "Java";
-const char     GENESIS_COINBASE_TX_HEX[]                     = "010a01ff0001a08d06029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121012c342af233d31a8c12d0e26f87eadcf28168949be8ecd9c8b74aa7eec74c50a3";
+const char     GENESIS_COINBASE_TX_HEX[]                     = "";
 const uint32_t GENESIS_NONCE                                 = 70;
 const uint64_t GENESIS_TIMESTAMP                             = 1496764095;
 
