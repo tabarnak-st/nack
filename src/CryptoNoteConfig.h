@@ -94,7 +94,7 @@ const uint64_t ICO_BLOCK_REWARD	                             = (UINT64_C(2844674
 const uint64_t MAX_BLOCK_REWARD                              = (UINT64_C(5) * parameters::COIN);
 const uint64_t REWARD_INCREASE_INTERVAL                      = (UINT64_C(2640));
 
-const char     CRYPTONOTE_NAME[]                             = "Java";
+const char     CRYPTONOTE_NAME[]                             = "Wayang";
 const char     GENESIS_COINBASE_TX_HEX[]                     = "010a01ff0001a08d06029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121015eb1764540b0ce197342119a76e4a4e6619dd2c246a393ded6b3ae10e031dafd";
 const uint32_t GENESIS_NONCE                                 = 70;
 const uint64_t GENESIS_TIMESTAMP                             = 402698477;
@@ -130,7 +130,7 @@ const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "0000000000000000
 
 const std::initializer_list<const char*> SEED_NODES = {
    "127.0.0.1:8080",
-   "192.168.8.2:8080",
+   //"192.168.8.2:8080",
 };
 
 struct CheckpointData {
