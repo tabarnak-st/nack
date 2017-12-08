@@ -30,7 +30,7 @@ const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW             = 30;
 const uint64_t MONEY_SUPPLY                                  = UINT64_C(2000000);
 
 const size_t   CRYPTONOTE_REWARD_BLOCKS_WINDOW               = 0.1;
-const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE     = 100000; //size of block (bytes) after which reward for block calculated using block size
+const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE     = 10000; //size of block (bytes) after which reward for block calculated using block size
 const size_t   CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE        = 600;
 const size_t   CRYPTONOTE_DISPLAY_DECIMAL_POINT              = 6;
 // COIN - number of smallest units in one coin
