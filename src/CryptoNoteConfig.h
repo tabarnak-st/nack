@@ -17,9 +17,9 @@
 namespace CryptoNote {
 namespace parameters {
 
-const uint64_t CRYPTONOTE_MAX_BLOCK_NUMBER                   = 500000000;
-const size_t   CRYPTONOTE_MAX_BLOCK_BLOB_SIZE                = 500000000;
-const size_t   CRYPTONOTE_MAX_TX_SIZE                        = 1000000000;
+const uint64_t CRYPTONOTE_MAX_BLOCK_NUMBER                   = 600000000;
+const size_t   CRYPTONOTE_MAX_BLOCK_BLOB_SIZE                = 600000000;
+const size_t   CRYPTONOTE_MAX_TX_SIZE                        = 2000000000;
 const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX       = 0x154bb0; // addresses start with "XRY1"
 const size_t   CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW          = 10;
 const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT            = 60 * 60 * 2;
@@ -90,7 +90,7 @@ const char     MINER_CONFIG_FILE_NAME[]                      = "miner_conf.json"
 } // parameters
 
 const uint64_t START_BLOCK_REWARD                            = (UINT64_C(100) * parameters::POINT);
-const uint64_t ICO_BLOCK_REWARD	                             = (UINT64_C(201467440) * parameters::COIN); // 18.4 billion ICO
+const uint64_t ICO_BLOCK_REWARD	                             = (UINT64_C(40201467440) * parameters::COIN); // 18.4 billion ICO
 const uint64_t MAX_BLOCK_REWARD                              = (UINT64_C(5) * parameters::COIN);
 const uint64_t REWARD_INCREASE_INTERVAL                      = (UINT64_C(2640));
 
@@ -129,9 +129,10 @@ const size_t   P2P_DEFAULT_HANDSHAKE_INVOKE_TIMEOUT          = 5000;          //
 const char     P2P_STAT_TRUSTED_PUB_KEY[]                    = "0000000000000000000000000000000000000000000000000000000000000000";
 
 const std::initializer_list<const char*> SEED_NODES = {
-   "127.0.0.1:8080",
-   "111.94.116.25:8080",
-   "223.255.225.67:8080",
+   "127.0.0.1:80",
+   "111.94.116.25:80",
+   "223.255.225.67:80",
+   "120.188.64.188:80",
 };
 
 struct CheckpointData {
