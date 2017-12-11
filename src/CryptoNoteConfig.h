@@ -89,13 +89,13 @@ const char     CRYPTONOTE_BLOCKCHAIN_INDICES_FILENAME[]      = "blockchainindice
 const char     MINER_CONFIG_FILE_NAME[]                      = "miner_conf.json";
 } // parameters
 
-const uint64_t START_BLOCK_REWARD                            = (UINT64_C(100) * parameters::POINT);
+const uint64_t START_BLOCK_REWARD                            = (UINT64_C(10) * parameters::POINT);
 const uint64_t ICO_BLOCK_REWARD	                             = (UINT64_C(40201467440) * parameters::COIN); // 18.4 billion ICO
-const uint64_t MAX_BLOCK_REWARD                              = (UINT64_C(5) * parameters::COIN);
+const uint64_t MAX_BLOCK_REWARD                              = (UINT64_C(2) * parameters::COIN);
 const uint64_t REWARD_INCREASE_INTERVAL                      = (UINT64_C(2640));
 
 const char     CRYPTONOTE_NAME[]                             = "Wayang";
-const char     GENESIS_COINBASE_TX_HEX[]                     = "010a01ff0001a08d06029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121015eb1764540b0ce197342119a76e4a4e6619dd2c246a393ded6b3ae10e031dafd";
+const char     GENESIS_COINBASE_TX_HEX[]                     = "010a01ff0001904e029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121018b64cdddcc1eecbed35ab64855279f5635ebb681f1812f51af2ed083bc4b457e";
 const uint32_t GENESIS_NONCE                                 = 70;
 const uint64_t GENESIS_TIMESTAMP                             = 402698477;
 
