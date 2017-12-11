@@ -97,7 +97,7 @@ const uint64_t REWARD_INCREASE_INTERVAL                      = (UINT64_C(2640));
 const char     CRYPTONOTE_NAME[]                             = "Wayang";
 const char     GENESIS_COINBASE_TX_HEX[]                     = "010a01ff0001904e029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121018b64cdddcc1eecbed35ab64855279f5635ebb681f1812f51af2ed083bc4b457e";
 const uint32_t GENESIS_NONCE                                 = 70;
-const uint64_t GENESIS_TIMESTAMP                             = 402698477;
+const uint64_t GENESIS_TIMESTAMP                             = 1513040990;
 
 const uint8_t  TRANSACTION_VERSION_1                         =  1;
 const uint8_t  TRANSACTION_VERSION_2                         =  2;
