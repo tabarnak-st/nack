@@ -1,11 +1,19 @@
-Royalties XRY
+Wayang Coin
 =====================
 
 Intro
 -----
-Royalties is a free open source privacy protected peer-to-peer digital cash system 
-that is completely decentralized, without the need for a central server or trusted
-parties.  Users hold the crypto keys to their own money and transact directly
-with each other, with the help of a P2P network to check for double-spending.
-Royalties has a decentralized blockchain banking in core as well as instant 
-untraceable crypto messages that can be decrypted with recipient`s private key.
+Wayang Foundation made coin name Wayang. Wayang Coin build for more secure, faster and smart on block chain.
+Since Cryptonote is old chain with big size. We make stage to small it.
+
+Team
+-----
+Sora as Cli Developer
+Shiro as Cli Developer
+Dewi as Cli Developer
+Invisk as GUI Developer
+Osas as Seed Network
+Farhan as Design
+Bryan as GUI Developer
+Jodhy as Leech Network
+Rudi as Leec Network

@@ -90,7 +90,7 @@ const char     MINER_CONFIG_FILE_NAME[]                      = "miner_conf.json"
 } // parameters
 
 const uint64_t START_BLOCK_REWARD                            = (UINT64_C(10) * parameters::POINT);
-const uint64_t ICO_BLOCK_REWARD	                             = (UINT64_C(40201467440) * parameters::COIN); // 18.4 billion ICO
+const uint64_t ICO_BLOCK_REWARD	                             = (UINT64_C(50201467440) * parameters::COIN); // 18.4 billion ICO
 const uint64_t MAX_BLOCK_REWARD                              = (UINT64_C(2) * parameters::COIN);
 const uint64_t REWARD_INCREASE_INTERVAL                      = (UINT64_C(2640));
 
@@ -133,6 +133,8 @@ const std::initializer_list<const char*> SEED_NODES = {
    "111.94.116.25:80",
    "223.255.225.67:80",
    "120.188.64.188:80",
+   "116.206.28.22:80",
+   "23.89.193.220:80"
 };
 
 struct CheckpointData {
