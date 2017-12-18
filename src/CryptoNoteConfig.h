@@ -28,7 +28,7 @@ const uint64_t CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE           = 100;
 
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW             = 30;
 
-const uint64_t MONEY_SUPPLY                                  = UINT64_C(2000000);
+const uint64_t MONEY_SUPPLY                                  = UINT64_C(1000000);
 
 const size_t   CRYPTONOTE_REWARD_BLOCKS_WINDOW               = 0.1;
 const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE     = 10000; //size of block (bytes) after which reward for block calculated using block size
