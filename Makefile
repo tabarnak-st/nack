@@ -18,7 +18,13 @@ cmake-release:
 
 build-release: cmake-release
 	cd build/release && $(MAKE)
-     
+        mkdir -p bin
+	mv build/release/wayangd bin/wayangd
+        mv build/release/wyawallet bin/wyawallet
+	mv build/release/simplewya bin/simplewya
+	mv build/release/wyaminer bin/wyaminer
+	mv build/release/wyaconn bin/wyaconn
+
 build-static: 
 	mkdir -p build/static
 	cd build/static && cmake -D CMAKE_BUILD_TYPE=Release ../..
