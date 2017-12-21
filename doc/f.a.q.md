@@ -21,7 +21,7 @@ change to
 const uint64_t MONEY_SUPPLY = (uint64_t)(-1);
 
 Q : Genesis block transaction
-A : you can empty first this line
+A : you can empty first this line on src/CryptoNoteConfig.h
 
 const char     GENESIS_COINBASE_TX_HEX[]                     = "010a01ff0001904e029b2e4c0281c0b02e7c53291a94d1d0cbff8883f8024f5142ee494ffbbd08807121018b64cdddcc1eecbed35ab64855279f5635ebb681f1812f51af2ed083bc4b457e";
 
@@ -36,3 +36,16 @@ Generate by make and try run daemon
 and Copy the genenis to
 
 const char     GENESIS_COINBASE_TX_HEX[]                     = "[genesis code when generated";
+
+Q : i wanna hard fork from your block chain how
+A : easy just input on this on src/CryptoNoteConfig.h
+
+const std::initializer_list<CheckpointData> CHECKPOINTS = {
+    //{ 1, "cbce7c37dbad257d29a3bfa93ec1f7b92434b9b806d40d01cb04d0ad2e451735" },    
+};
+
+to
+
+const std::initializer_list<CheckpointData> CHECKPOINTS = {
+    { 1, "[checkpoint block see on checkpoint list]" },    
+};
