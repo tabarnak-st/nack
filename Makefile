@@ -18,6 +18,12 @@ cmake-release:
 
 build-release: cmake-release
 	cd build/release && $(MAKE)
+        mkdir -p bin
+	mv build/release/src/wayangd bin/wayangd
+        mv build/release/src/wyawallet bin/wyawallet
+	mv build/release/src/simplewya bin/simplewya
+	mv build/release/src/wyaminer bin/wyaminer
+	mv build/release/src/wyaconn bin/wyaconn
 
 build-static: 
 	mkdir -p build/static
