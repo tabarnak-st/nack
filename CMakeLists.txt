@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.0)
 
 set(VERSION "0.1")
 # Packaged from commit 72946d93d209ad1dd3b642c395653f166d8060e7
@@ -17,7 +17,7 @@ enable_testing()
 # copy CTestCustom.cmake to build dir to disable long running tests in 'make test'
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_BINARY_DIR})
 
-project(Royalties)
+project(Wayang)
 
 include_directories(include src external "${CMAKE_BINARY_DIR}/version")
 if(APPLE)
