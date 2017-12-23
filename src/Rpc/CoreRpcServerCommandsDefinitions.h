@@ -405,7 +405,7 @@ struct BLOCK_HEADER_RESPONSE {
 };
 
 
-struct f_transaction_short_response {
+struct transaction_short_response {
   std::string hash;
   uint64_t fee;
   uint64_t amount_out;
@@ -419,7 +419,7 @@ struct f_transaction_short_response {
   }
 };
 
-struct f_transaction_details_response {
+struct transaction_details_response {
   std::string hash;
   size_t size;
   std::string paymentId;
@@ -437,7 +437,7 @@ struct f_transaction_details_response {
   }
 };
 
-struct f_block_short_response {
+struct block_short_response {
   uint64_t timestamp;
   uint32_t height;
   difficulty_type difficulty;
@@ -455,7 +455,7 @@ struct f_block_short_response {
   }
 };
 
-struct f_block_details_response {
+struct block_details_response {
   uint8_t major_version;
   uint8_t minor_version;  
   uint64_t timestamp;
@@ -566,7 +566,7 @@ struct currency_core {
 
 
 
-struct f_transaction_short_response {
+struct transaction_short_response {
   std::string hash;
   uint64_t fee;
   uint64_t amount_out;
@@ -580,7 +580,7 @@ struct f_transaction_short_response {
   }
 };
 
-struct f_transaction_details_response {
+struct transaction_details_response {
   std::string hash;
   uint64_t receiveTime;
   size_t size;
@@ -600,7 +600,7 @@ struct f_transaction_details_response {
   }
 };
 
-struct f_block_short_response {
+struct block_short_response {
   uint64_t timestamp;
   uint32_t height;
   std::string hash;
@@ -616,7 +616,7 @@ struct f_block_short_response {
   }
 };
 
-struct f_block_details_response {
+struct block_details_response {
   uint8_t major_version;
   uint8_t minor_version;  
   uint64_t timestamp;
@@ -740,7 +740,7 @@ struct COMMAND_RPC_GET_BLOCK_HEADER_BY_HASH {
   typedef BLOCK_HEADER_RESPONSE response;
 };
 
-struct F_COMMAND_RPC_GET_BLOCKS_LIST {
+struct COMMAND_RPC_GET_BLOCKS_LIST {
   struct request {
     uint64_t height;
 
@@ -760,7 +760,7 @@ struct F_COMMAND_RPC_GET_BLOCKS_LIST {
   };
 };
 
-struct F_COMMAND_RPC_GET_BLOCK_DETAILS {
+struct COMMAND_RPC_GET_BLOCK_DETAILS {
   struct request {
     std::string hash;
 
@@ -780,7 +780,7 @@ struct F_COMMAND_RPC_GET_BLOCK_DETAILS {
   };
 };
 
-struct F_COMMAND_RPC_GET_TRANSACTION_DETAILS {
+struct COMMAND_RPC_GET_TRANSACTION_DETAILS {
   struct request {
     std::string hash;
 
@@ -803,7 +803,7 @@ struct F_COMMAND_RPC_GET_TRANSACTION_DETAILS {
     }
   };
 };
-struct F_COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS {
+struct COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS {
   typedef EMPTY_STRUCT request;
   struct response {
     currency_base_coin base_coin;
@@ -834,7 +834,7 @@ struct COMMAND_RPC_GET_BLOCK_HEADER_BY_HEIGHT {
 
 
 
-struct F_COMMAND_RPC_GET_BLOCKS_LIST {
+struct COMMAND_RPC_GET_BLOCKS_LIST {
   struct request {
     uint64_t height;
 
@@ -854,7 +854,7 @@ struct F_COMMAND_RPC_GET_BLOCKS_LIST {
   };
 };
 
-struct F_COMMAND_RPC_GET_BLOCK_DETAILS {
+struct COMMAND_RPC_GET_BLOCK_DETAILS {
   struct request {
     std::string hash;
 
@@ -874,7 +874,7 @@ struct F_COMMAND_RPC_GET_BLOCK_DETAILS {
   };
 };
 
-struct F_COMMAND_RPC_GET_TRANSACTION_DETAILS {
+struct COMMAND_RPC_GET_TRANSACTION_DETAILS {
   struct request {
     std::string hash;
 
@@ -898,7 +898,7 @@ struct F_COMMAND_RPC_GET_TRANSACTION_DETAILS {
   };
 };
 
-struct F_COMMAND_RPC_GET_POOL {
+struct COMMAND_RPC_GET_POOL {
     typedef EMPTY_STRUCT request;
 
     struct response {
@@ -912,7 +912,7 @@ struct F_COMMAND_RPC_GET_POOL {
     };
 };
 
-struct F_COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS {
+struct COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS {
   typedef EMPTY_STRUCT request;
   struct response {
     currency_base_coin base_coin;
