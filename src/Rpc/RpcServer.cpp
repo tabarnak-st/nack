@@ -132,15 +132,15 @@ bool RpcServer::processJsonRpcRequest(const HttpRequest& request, HttpResponse& 
     jsonResponse.setId(jsonRequest.getId()); // copy id
 
     static std::unordered_map<std::string, RpcServer::RpcHandler<JsonMemberMethod>> jsonRpcHandlers = {
-      { "f_blocks_list_json", { makeMemberMethod(&RpcServer::f_on_blocks_list_json), false } },
-      { "f_block_json", { makeMemberMethod(&RpcServer::f_on_block_json), false } },
-      { "f_transaction_json", { makeMemberMethod(&RpcServer::f_on_transaction_json), false } },
-      { "f_on_transactions_pool_json", { makeMemberMethod(&RpcServer::f_on_transactions_pool_json), false } },
-     // { "f_get_blockchain_settings", { makeMemberMethod(&RpcServer::f_on_get_blockchain_settings), true } },
-      { "f_blocks_list_json", makeMemberMethod(&RpcServer::f_on_blocks_list_json) },
-      { "f_block_json", makeMemberMethod(&RpcServer::f_on_block_json) },
-      { "f_transaction_json", makeMemberMethod(&RpcServer::f_on_transaction_json) },
-      { "f_get_blockchain_settings", makeMemberMethod(&RpcServer::f_on_get_blockchain_settings) },
+      { "blocks_list_json", { makeMemberMethod(&RpcServer::on_blocks_list_json), false } },
+      { "block_json", { makeMemberMethod(&RpcServer::on_block_json), false } },
+      { "transaction_json", { makeMemberMethod(&RpcServer::on_transaction_json), false } },
+      { "on_transactions_pool_json", { makeMemberMethod(&RpcServer::on_transactions_pool_json), false } },
+     // { "get_blockchain_settings", { makeMemberMethod(&RpcServer::on_get_blockchain_settings), true } },
+      { "blocks_list_json", makeMemberMethod(&RpcServer::on_blocks_list_json) },
+      { "block_json", makeMemberMethod(&RpcServer::on_block_json) },
+      { "transaction_json", makeMemberMethod(&RpcServer::on_transaction_json) },
+      { "get_blockchain_settings", makeMemberMethod(&RpcServer::on_get_blockchain_settings) },
       { "getblockcount", { makeMemberMethod(&RpcServer::on_getblockcount), true } },
       { "on_getblockhash", { makeMemberMethod(&RpcServer::on_getblockhash), false } },
       { "getblocktemplate", { makeMemberMethod(&RpcServer::on_getblocktemplate), false } },
@@ -173,7 +173,7 @@ bool RpcServer::processJsonRpcRequest(const HttpRequest& request, HttpResponse& 
   return true;
 }
 
-bool RpcServer::f_on_blocks_list_json(const F_COMMAND_RPC_GET_BLOCKS_LIST::request& req, F_COMMAND_RPC_GET_BLOCKS_LIST::response& res) {
+bool RpcServer::on_blocks_list_json(const COMMAND_RPC_GET_BLOCKS_LIST::request& req, COMMAND_RPC_GET_BLOCKS_LIST::response& res) {
   if (m_core.get_current_blockchain_height() <= req.height) {
     throw JsonRpc::JsonRpcError{ CORE_RPC_ERROR_CODE_TOO_BIG_HEIGHT,
       std::string("To big height: ") + std::to_string(req.height) + ", current blockchain height = " + std::to_string(m_core.get_current_blockchain_height()) };
@@ -198,7 +198,7 @@ bool RpcServer::f_on_blocks_list_json(const F_COMMAND_RPC_GET_BLOCKS_LIST::reque
     size_t blokBlobSize = getObjectBinarySize(blk);
     size_t minerTxBlobSize = getObjectBinarySize(blk.baseTransaction);
 
-    f_block_short_response block_short;
+    block_short_response block_short;
     block_short.cumul_size = blokBlobSize + tx_cumulative_block_size - minerTxBlobSize;
     block_short.timestamp = blk.timestamp;
     block_short.height = i;
@@ -216,7 +216,7 @@ bool RpcServer::f_on_blocks_list_json(const F_COMMAND_RPC_GET_BLOCKS_LIST::reque
   return true;
 }
 
-bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& req, F_COMMAND_RPC_GET_BLOCK_DETAILS::response& res) {
+bool RpcServer::on_block_json(const COMMAND_RPC_GET_BLOCK_DETAILS::request& req, COMMAND_RPC_GET_BLOCK_DETAILS::response& res) {
   Hash hash;
 
   if (!parse_hash256(req.hash, hash)) {
@@ -334,7 +334,7 @@ bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& 
   return true;
 }
 
-bool RpcServer::f_on_transaction_json(const F_COMMAND_RPC_GET_TRANSACTION_DETAILS::request& req, F_COMMAND_RPC_GET_TRANSACTION_DETAILS::response& res) {
+bool RpcServer::on_transaction_json(const COMMAND_RPC_GET_TRANSACTION_DETAILS::request& req, COMMAND_RPC_GET_TRANSACTION_DETAILS::response& res) {
   Hash hash;
 
   if (!parse_hash256(req.hash, hash)) {
@@ -367,7 +367,7 @@ bool RpcServer::f_on_transaction_json(const F_COMMAND_RPC_GET_TRANSACTION_DETAIL
       m_core.getBlockSize(blockHash, tx_cumulative_block_size);
       size_t blokBlobSize = getObjectBinarySize(blk);
       size_t minerTxBlobSize = getObjectBinarySize(blk.baseTransaction);
-      f_block_short_response block_short;
+      block_short_response block_short;
 
       block_short.cumul_size = blokBlobSize + tx_cumulative_block_size - minerTxBlobSize;
       block_short.timestamp = blk.timestamp;
@@ -389,7 +389,7 @@ bool RpcServer::f_on_transaction_json(const F_COMMAND_RPC_GET_TRANSACTION_DETAIL
   res.txDetails.size = getObjectBinarySize(res.tx);
 
   uint64_t mixin;
-  if (!f_getMixin(res.tx, mixin)) {
+  if (!getMixin(res.tx, mixin)) {
     return false;
   }
   res.txDetails.mixin = mixin;
@@ -405,7 +405,7 @@ bool RpcServer::f_on_transaction_json(const F_COMMAND_RPC_GET_TRANSACTION_DETAIL
   return true;
 }
 
-bool RpcServer::f_getMixin(const Transaction& transaction, uint64_t& mixin) {
+bool RpcServer::getMixin(const Transaction& transaction, uint64_t& mixin) {
   mixin = 0;
   for (const TransactionInput& txin : transaction.inputs) {
     if (txin.type() != typeid(KeyInput)) {
@@ -418,7 +418,7 @@ bool RpcServer::f_getMixin(const Transaction& transaction, uint64_t& mixin) {
   }
   return true;
 }
-bool RpcServer::f_on_get_blockchain_settings(const F_COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS::request& req, F_COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS::response& res) {
+bool RpcServer::on_get_blockchain_settings(const COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS::request& req, COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS::response& res) {
   res.base_coin.name = "bytecoin";
   res.base_coin.git = "https://github.com/amjuarez/bytecoin.git";
 
@@ -756,7 +756,7 @@ bool RpcServer::on_stop_daemon(const COMMAND_RPC_STOP_DAEMON::request& req, COMM
 //------------------------------------------------------------------------------------------------------------------------------
 // JSON RPC methods
 //------------------------------------------------------------------------------------------------------------------------------
-bool RpcServer::f_on_blocks_list_json(const F_COMMAND_RPC_GET_BLOCKS_LIST::request& req, F_COMMAND_RPC_GET_BLOCKS_LIST::response& res) {
+bool RpcServer::on_blocks_list_json(const COMMAND_RPC_GET_BLOCKS_LIST::request& req, COMMAND_RPC_GET_BLOCKS_LIST::response& res) {
   if (m_core.get_current_blockchain_height() <= req.height) {
     throw JsonRpc::JsonRpcError{ CORE_RPC_ERROR_CODE_TOO_BIG_HEIGHT,
       std::string("To big height: ") + std::to_string(req.height) + ", current blockchain height = " + std::to_string(m_core.get_current_blockchain_height()) };
@@ -781,7 +781,7 @@ bool RpcServer::f_on_blocks_list_json(const F_COMMAND_RPC_GET_BLOCKS_LIST::reque
     size_t blokBlobSize = getObjectBinarySize(blk);
     size_t minerTxBlobSize = getObjectBinarySize(blk.baseTransaction);
 
-    f_block_short_response block_short;
+    block_short_response block_short;
     block_short.cumul_size = blokBlobSize + tx_cumulative_block_size - minerTxBlobSize;
     block_short.timestamp = blk.timestamp;
     block_short.height = i;
@@ -799,7 +799,7 @@ bool RpcServer::f_on_blocks_list_json(const F_COMMAND_RPC_GET_BLOCKS_LIST::reque
   return true;
 }
 
-bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& req, F_COMMAND_RPC_GET_BLOCK_DETAILS::response& res) {
+bool RpcServer::on_block_json(const COMMAND_RPC_GET_BLOCK_DETAILS::request& req, COMMAND_RPC_GET_BLOCK_DETAILS::response& res) {
   Hash hash;
 
   if (!parse_hash256(req.hash, hash)) {
@@ -941,7 +941,7 @@ bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& 
   return true;
 }
 
-bool RpcServer::f_on_transaction_json(const F_COMMAND_RPC_GET_TRANSACTION_DETAILS::request& req, F_COMMAND_RPC_GET_TRANSACTION_DETAILS::response& res) {
+bool RpcServer::on_transaction_json(const COMMAND_RPC_GET_TRANSACTION_DETAILS::request& req, COMMAND_RPC_GET_TRANSACTION_DETAILS::response& res) {
   Hash hash;
 
   if (!parse_hash256(req.hash, hash)) {
@@ -974,7 +974,7 @@ bool RpcServer::f_on_transaction_json(const F_COMMAND_RPC_GET_TRANSACTION_DETAIL
       m_core.getBlockSize(blockHash, tx_cumulative_block_size);
       size_t blokBlobSize = getObjectBinarySize(blk);
       size_t minerTxBlobSize = getObjectBinarySize(blk.baseTransaction);
-      f_block_short_response block_short;
+      block_short_response block_short;
 
       block_short.cumul_size = blokBlobSize + tx_cumulative_block_size - minerTxBlobSize;
       block_short.timestamp = blk.timestamp;
@@ -1003,7 +1003,7 @@ bool RpcServer::f_on_transaction_json(const F_COMMAND_RPC_GET_TRANSACTION_DETAIL
   res.txDetails.size = getObjectBinarySize(res.tx);
 
   uint64_t mixin;
-  if (!f_getMixin(res.tx, mixin)) {
+  if (!getMixin(res.tx, mixin)) {
     return false;
   }
   res.txDetails.mixin = mixin;
@@ -1019,7 +1019,7 @@ bool RpcServer::f_on_transaction_json(const F_COMMAND_RPC_GET_TRANSACTION_DETAIL
   return true;
 }
 
-bool RpcServer::f_getMixin(const Transaction& transaction, uint64_t& mixin) {
+bool RpcServer::getMixin(const Transaction& transaction, uint64_t& mixin) {
   mixin = 0;
   for (const TransactionInput& txin : transaction.inputs) {
     if (txin.type() != typeid(KeyInput)) {
@@ -1033,7 +1033,7 @@ bool RpcServer::f_getMixin(const Transaction& transaction, uint64_t& mixin) {
   return true;
 }
 
-bool RpcServer::f_on_transactions_pool_json(const F_COMMAND_RPC_GET_POOL::request& req, F_COMMAND_RPC_GET_POOL::response& res) {
+bool RpcServer::on_transactions_pool_json(const COMMAND_RPC_GET_POOL::request& req, COMMAND_RPC_GET_POOL::response& res) {
     auto pool = m_core.getPoolTransactions();
     for (const Transaction tx : pool) {
         transaction_short_response transaction_short;
