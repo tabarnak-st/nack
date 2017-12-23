@@ -476,7 +476,7 @@ struct block_details_response {
   uint64_t baseReward;
   double penalty;
   uint64_t totalFeeAmount;
-  std::vector<f_transaction_short_response> transactions;
+  std::vector<transaction_short_response> transactions;
 
   void serialize(ISerializer &s) {
     KV_MEMBER(major_version)
@@ -636,7 +636,7 @@ struct block_details_response {
   uint64_t baseReward;
   double penalty;
   uint64_t totalFeeAmount;
-  std::vector<f_transaction_short_response> transactions;
+  std::vector<transaction_short_response> transactions;
 
   void serialize(ISerializer &s) {
     KV_MEMBER(major_version)
@@ -750,7 +750,7 @@ struct COMMAND_RPC_GET_BLOCKS_LIST {
   };
 
   struct response {
-    std::vector<f_block_short_response> blocks; //transactions blobs as hex
+    std::vector<block_short_response> blocks; //transactions blobs as hex
     std::string status;
 
     void serialize(ISerializer &s) {
@@ -770,7 +770,7 @@ struct COMMAND_RPC_GET_BLOCK_DETAILS {
   };
 
   struct response {
-    f_block_details_response block;
+    block_details_response block;
     std::string status;
 
     void serialize(ISerializer &s) {
@@ -791,8 +791,8 @@ struct COMMAND_RPC_GET_TRANSACTION_DETAILS {
 
   struct response {
     Transaction tx;
-    f_transaction_details_response txDetails;
-    f_block_short_response block;
+    transaction_details_response txDetails;
+    block_short_response block;
     std::string status;
 
     void serialize(ISerializer &s) {
@@ -844,7 +844,7 @@ struct COMMAND_RPC_GET_BLOCKS_LIST {
   };
 
   struct response {
-    std::vector<f_block_short_response> blocks; //transactions blobs as hex
+    std::vector<block_short_response> blocks; //transactions blobs as hex
     std::string status;
 
     void serialize(ISerializer &s) {
@@ -864,7 +864,7 @@ struct COMMAND_RPC_GET_BLOCK_DETAILS {
   };
 
   struct response {
-    f_block_details_response block;
+    block_details_response block;
     std::string status;
 
     void serialize(ISerializer &s) {
@@ -885,8 +885,8 @@ struct COMMAND_RPC_GET_TRANSACTION_DETAILS {
 
   struct response {
     Transaction tx;
-    f_transaction_details_response txDetails;
-    f_block_short_response block;
+    transaction_details_response txDetails;
+    block_short_response block;
     std::string status;
 
     void serialize(ISerializer &s) {
@@ -902,7 +902,7 @@ struct COMMAND_RPC_GET_POOL {
     typedef EMPTY_STRUCT request;
 
     struct response {
-        std::vector<f_transaction_short_response> transactions; //transactions blobs as hex
+        std::vector<transaction_short_response> transactions; //transactions blobs as hex
         std::string status;
 
         void serialize(ISerializer &s) {
