@@ -423,7 +423,6 @@ struct f_transaction_short_response {
 
 struct f_transaction_details_response {
   std::string hash;
-  uint64_t receiveTime;
   size_t size;
   std::string paymentId;
   uint64_t mixin;
@@ -432,7 +431,6 @@ struct f_transaction_details_response {
 
   void serialize(ISerializer &s) {
     KV_MEMBER(hash)
-    KV_MEMBER(receiveTime)
     KV_MEMBER(size)
     KV_MEMBER(paymentId)
     KV_MEMBER(mixin)
@@ -536,7 +534,7 @@ struct currency_core {
   uint64_t UPGRADE_HEIGHT;
   uint64_t DIFFICULTY_CUT;
   uint64_t DIFFICULTY_LAG;
-  //std::string BYTECOIN_NETWORK;
+  std::string BYTECOIN_NETWORK;
   std::string CRYPTONOTE_NAME;
   std::string GENESIS_COINBASE_TX_HEX;
   std::vector<std::string> CHECKPOINTS;
@@ -561,7 +559,7 @@ struct currency_core {
     KV_MEMBER(UPGRADE_HEIGHT)
     KV_MEMBER(DIFFICULTY_CUT)
     KV_MEMBER(DIFFICULTY_LAG)
-//    KV_MEMBER(BYTECOIN_NETWORK)
+    KV_MEMBER(BYTECOIN_NETWORK)
     KV_MEMBER(CRYPTONOTE_NAME)
     KV_MEMBER(GENESIS_COINBASE_TX_HEX)
     KV_MEMBER(CHECKPOINTS)
