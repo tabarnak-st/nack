@@ -2,6 +2,8 @@
 // Copyright (c) 2014-2017 XDN developers
 // Copyright (c) 2016-2017 BXC developers
 // Copyright (c) 2017 Royalties developers
+// Copyright (c) 2010-2017 Kohaku developers
+// Copyright (c) 2017 Wayang developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -75,7 +77,7 @@ private:
   bool f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& req, F_COMMAND_RPC_GET_BLOCK_DETAILS::response& res);
   bool f_on_transaction_json(const F_COMMAND_RPC_GET_TRANSACTION_DETAILS::request& req, F_COMMAND_RPC_GET_TRANSACTION_DETAILS::response& res);
   bool f_on_transactions_pool_json(const F_COMMAND_RPC_GET_POOL::request& req, F_COMMAND_RPC_GET_POOL::response& res);
-  bool f_getMixin(const Transaction& transaction, uint64_t& mixin);
+  bool f_getMixin(const Transaction& transaction, uint64_t& mixin); 
  // bool f_on_get_blockchain_settings(const F_COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS::request& req, F_COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS::response& res);
 
   Logging::LoggerRef logger;
