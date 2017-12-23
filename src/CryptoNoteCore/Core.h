@@ -112,6 +112,7 @@ namespace CryptoNote {
      uint64_t difficultyAtHeight(uint64_t height);
 
      void set_cryptonote_protocol(i_cryptonote_protocol* pprotocol);
+     Checkpoints get_checkpoints();
      void set_checkpoints(Checkpoints&& chk_pts);
 
      std::vector<Transaction> getPoolTransactions() override;

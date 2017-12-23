@@ -23,6 +23,7 @@ class AccountBase;
 
 class Currency {
 public:
+  std::string cryptonoteName() const { return m_cryptonoteName; }
   uint64_t maxBlockHeight() const { return m_maxBlockHeight; }
   size_t maxBlockBlobSize() const { return m_maxBlockBlobSize; }
   size_t maxTxSize() const { return m_maxTxSize; }
@@ -134,6 +135,7 @@ private:
   uint64_t baseRewardFunction(uint64_t alreadyGeneratedCoins, uint32_t height) const;
 
 private:
+  std::string m_cryptonoteName;
   uint64_t m_maxBlockHeight;
   size_t m_maxBlockBlobSize;
   size_t m_maxTxSize;
@@ -221,6 +223,7 @@ public:
   Transaction generateGenesisTransaction();
  // Transaction generateGenesisTransaction(const std::vector<AccountPublicAddress>& targets);
 
+  CurrencyBuilder& cryptonoteName(std::string val) { m_currency.m_cryptonoteName = val; return *this; }	
   CurrencyBuilder& maxBlockNumber(uint64_t val) { m_currency.m_maxBlockHeight = val; return *this; }
   CurrencyBuilder& maxBlockBlobSize(size_t val) { m_currency.m_maxBlockBlobSize = val; return *this; }
   CurrencyBuilder& maxTxSize(size_t val) { m_currency.m_maxTxSize = val; return *this; }
