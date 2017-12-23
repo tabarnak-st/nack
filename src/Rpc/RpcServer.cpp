@@ -385,6 +385,8 @@ bool RpcServer::on_transaction_json(const COMMAND_RPC_GET_TRANSACTION_DETAILS::r
 
   res.txDetails.hash = Common::podToHex(getObjectHash(res.tx));
   res.txDetails.fee = amount_in - amount_out;
+  if (amount_in == 0)
+	res.txDetails.fee = 0;
   res.txDetails.amount_out = amount_out;
   res.txDetails.size = getObjectBinarySize(res.tx);
 

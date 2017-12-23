@@ -571,13 +571,13 @@ struct transaction_short_response {
   std::string hash;
   uint64_t fee;
   uint64_t amount_out;
-  uint64_t blockSize;
+  uint64_t size;
 
   void serialize(ISerializer &s) {
     KV_MEMBER(hash)
     KV_MEMBER(fee)
     KV_MEMBER(amount_out)
-    KV_MEMBER(blockSize)
+    KV_MEMBER(size)
   }
 };
 
@@ -630,9 +630,10 @@ struct block_details_response {
   difficulty_type difficulty;
   uint64_t reward;
   uint64_t blockSize;
-  uint64_t sizeMedian;
+  size_t sizeMedian;
+  uint64_t effectiveSizeMedian;
   uint64_t transactionsCumulativeSize;
-  uint64_t alreadyGeneratedCoins;
+  std::string alreadyGeneratedCoins;
   uint64_t alreadyGeneratedTransactions;
   uint64_t baseReward;
   double penalty;
