@@ -303,7 +303,7 @@ bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& 
   }
 
   // Base transaction adding
-  f_transaction_short_response transaction_short;
+  transaction_short_response transaction_short;
   transaction_short.hash = Common::podToHex(getObjectHash(blk.baseTransaction));
   transaction_short.fee = 0;
   transaction_short.amount_out = get_outs_money_amount(blk.baseTransaction);
@@ -317,7 +317,7 @@ bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& 
   res.block.totalFeeAmount = 0;
 
   for (const Transaction& tx : txs) {
-    f_transaction_short_response transaction_short;
+    transaction_short_response transaction_short;
     uint64_t amount_in = 0;
     get_inputs_money_amount(tx, amount_in);
     uint64_t amount_out = get_outs_money_amount(tx);
@@ -905,7 +905,7 @@ bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& 
   }
 
   // Base transaction adding
-  f_transaction_short_response transaction_short;
+  transaction_short_response transaction_short;
   transaction_short.hash = Common::podToHex(getObjectHash(blk.baseTransaction));
   transaction_short.fee = 0;
   transaction_short.amount_out = get_outs_money_amount(blk.baseTransaction);
@@ -920,7 +920,7 @@ bool RpcServer::f_on_block_json(const F_COMMAND_RPC_GET_BLOCK_DETAILS::request& 
   res.block.totalFeeAmount = 0;
 
   for (const Transaction& tx : txs) {
-    f_transaction_short_response transaction_short;
+    transaction_short_response transaction_short;
     uint64_t amount_in = 0;
     get_inputs_money_amount(tx, amount_in);
     uint64_t amount_out = get_outs_money_amount(tx);
@@ -1036,7 +1036,7 @@ bool RpcServer::f_getMixin(const Transaction& transaction, uint64_t& mixin) {
 bool RpcServer::f_on_transactions_pool_json(const F_COMMAND_RPC_GET_POOL::request& req, F_COMMAND_RPC_GET_POOL::response& res) {
     auto pool = m_core.getPoolTransactions();
     for (const Transaction tx : pool) {
-        f_transaction_short_response transaction_short;
+        transaction_short_response transaction_short;
         uint64_t amount_in = getInputAmount(tx);
         uint64_t amount_out = getOutputAmount(tx);
 
