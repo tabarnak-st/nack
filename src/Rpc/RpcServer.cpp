@@ -138,7 +138,7 @@ bool RpcServer::processJsonRpcRequest(const HttpRequest& request, HttpResponse& 
       { "f_block_json", { makeMemberMethod(&RpcServer::f_on_block_json), false } },
       { "f_transaction_json", { makeMemberMethod(&RpcServer::f_on_transaction_json), false } },
       { "f_on_transactions_pool_json", { makeMemberMethod(&RpcServer::f_on_transactions_pool_json), false } },
-      //{ "f_get_blockchain_settings", { makeMemberMethod(&RpcServer::f_on_get_blockchain_settings), true } },
+     // { "f_get_blockchain_settings", { makeMemberMethod(&RpcServer::f_on_get_blockchain_settings), true } },
       { "getblockcount", { makeMemberMethod(&RpcServer::on_getblockcount), true } },
       { "on_getblockhash", { makeMemberMethod(&RpcServer::on_getblockhash), false } },
       { "getblocktemplate", { makeMemberMethod(&RpcServer::on_getblocktemplate), false } },
@@ -729,62 +729,6 @@ bool RpcServer::f_getMixin(const Transaction& transaction, uint64_t& mixin) {
   }
   return true;
 }
-
-//bool RpcServer::f_on_get_blockchain_settings(const F_COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS::request& req, F_COMMAND_RPC_GET_BLOCKCHAIN_SETTINGS::response& res) {
-  //res.base_coin.name = "bytecoin";
-  //res.base_coin.git = "https://github.com/amjuarez/bytecoin.git";
-
-  // Hardcoded plugins, refactor this
-  //res.extensions.push_back("core/bytecoin.json");
-  //res.extensions.push_back("print-genesis-tx.json");
-  //res.extensions.push_back("simplewallet-default-fee.json");
-  //res.extensions.push_back("max-transaction-size-limit.json");
-  //res.extensions.push_back("genesis-block-reward.json");
-
-  //res.core.CRYPTONOTE_NAME = m_core.currency().cryptonoteName();
-
-  //res.core.EMISSION_SPEED_FACTOR = m_core.currency().emissionSpeedFactor();
-  //res.core.DIFFICULTY_TARGET = m_core.currency().difficultyTarget();
-  //res.core.CRYPTONOTE_DISPLAY_DECIMAL_POINT = m_core.currency().numberOfDecimalPlaces();
-  //res.core.MONEY_SUPPLY = std::to_string(m_core.currency().moneySupply());
-  //res.core.EXPECTED_NUMBER_OF_BLOCKS_PER_DAY = m_core.currency().difficultyWindow();
-  //res.core.GENESIS_BLOCK_REWARD = m_core.currency().genesisBlockReward();
-  //res.core.DEFAULT_DUST_THRESHOLD = m_core.currency().defaultDustThreshold();
-  //res.core.MINIMUM_FEE = m_core.currency().minimumFee();
-  //res.core.CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW = m_core.currency().minedMoneyUnlockWindow();
-  //res.core.CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE = m_core.currency().blockGrantedFullRewardZone();
-  //res.core.CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1 = m_core.currency().blockGrantedFullRewardZoneV1();
-  //res.core.CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX = m_core.currency().publicAddressBase58Prefix();
-  //res.core.MAX_BLOCK_SIZE_INITIAL = m_core.currency().maxBlockSizeInitial();
-  //res.core.UPGRADE_HEIGHT = m_core.currency().upgradeHeight();
-  //res.core.DIFFICULTY_CUT = m_core.currency().difficultyCut();
-  //res.core.DIFFICULTY_LAG = m_core.currency().difficultyLag();
-
-  //res.core.P2P_DEFAULT_PORT = m_p2p.get_this_peer_port();
-  // Not real. Change
-  //res.core.RPC_DEFAULT_PORT = m_p2p.get_this_peer_port() + 1;
-
-  //for (const NetworkAddress& na : m_p2p.get_seed_nodes()) {
-    //std::string na_string = Common::ipAddressToString(na.ip) + ":" + std::to_string(na.port);
-
-    //res.core.SEED_NODES.push_back(na_string);
-  //}
-
-  //res.core.BYTECOIN_NETWORK = boost::lexical_cast<std::string>(m_p2p.get_network_id());
-
-  //std::map<uint32_t, Crypto::Hash> cp;
-  //cp = m_core.get_checkpoints().get_checkpoints();
-  //for (auto i : cp) {
-    //std::string cp_string = std::to_string(i.first) + ":" +  Common::podToHex(i.second);
-
-    //res.core.CHECKPOINTS.push_back(cp_string);
-  //}
-
-  //res.core.GENESIS_COINBASE_TX_HEX = Common::toHex(CryptoNote::toBinaryArray(m_core.currency().genesisBlock().baseTransaction));
-
-  //res.status = CORE_RPC_STATUS_OK;
-  //return true;
-//}
 
 bool RpcServer::f_on_transactions_pool_json(const F_COMMAND_RPC_GET_POOL::request& req, F_COMMAND_RPC_GET_POOL::response& res) {
     auto pool = m_core.getPoolTransactions();

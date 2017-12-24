@@ -136,8 +136,6 @@ namespace CryptoNote
     size_t get_outgoing_connections_count();
 
     CryptoNote::PeerlistManager& getPeerlistManager() { return m_peerlist; }
-    std::vector<NetworkAddress> get_seed_nodes(){return m_seed_nodes;}
-    boost::uuids::uuid get_network_id(){return m_network_id;}
 
   private:
 
@@ -265,3 +263,4 @@ namespace CryptoNote
     boost::uuids::uuid m_network_id;
   };
 }
+
