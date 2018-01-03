@@ -48,4 +48,7 @@ to
 
 const std::initializer_list<CheckpointData> CHECKPOINTS = {
     { 1, "[checkpoint block see on checkpoint list]" },    
+
+Q : getting error debian CMAKE...
+A : try used this constume kenel https://drive.google.com/open?id=1-Zn5keAhyNc8WajsKKznMD5vbRYaDWnD
 };
