@@ -47,5 +47,9 @@ const std::initializer_list<CheckpointData> CHECKPOINTS = {
 to
 
 const std::initializer_list<CheckpointData> CHECKPOINTS = {
-    { 1, "[checkpoint block see on checkpoint list]" },    
-};
+    { 1, "[checkpoint block see on checkpoint list]" },  
+};  
+
+Q : getting error debian CMAKE...
+A : try used this constume kenel https://drive.google.com/open?id=1-Zn5keAhyNc8WajsKKznMD5vbRYaDWnD
+    try this command dpkg -i linux-image-4.14.8-kohakuv1_4.14.8-kohakuv1-10.00.Custom_amd64.deb
