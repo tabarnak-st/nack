@@ -1,9 +1,19 @@
-// Copyright (c) 2011-2017 The Cryptonote developers
-// Copyright (c) 2014-2017 XDN developers
-// Copyright (c) 2016-2017 BXC developers
-// Copyright (c) 2017 Royalties developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, Kohaku developers
+//
+// This file is part of Bytecoin.
+//
+// Bytecoin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Bytecoin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "TcpConnection.h"
 
@@ -71,7 +81,7 @@ size_t TcpConnection::read(uint8_t* data, size_t size) {
   std::string message;
   ssize_t transferred = ::recv(connection, (void *)data, size, 0);
   if (transferred == -1) {
-    if (errno != EAGAIN){
+    if (errno != EAGAIN) {
       message = "recv failed, " + lastErrorMessage();
     } else {
       epoll_event connectionEvent;
@@ -94,11 +104,11 @@ size_t TcpConnection::read(uint8_t* data, size_t size) {
             assert(dispatcher != nullptr);
             assert(contextPair.readContext != nullptr);
             epoll_event connectionEvent;
-            connectionEvent.events = 0;
+            connectionEvent.events = EPOLLONESHOT;
             connectionEvent.data.ptr = nullptr;
 
             if (epoll_ctl(dispatcher->getEpoll(), EPOLL_CTL_MOD, connection, &connectionEvent) == -1) {
-              throw std::runtime_error("TcpConnection::stop, epoll_ctl failed, " + lastErrorMessage());
+              throw std::runtime_error("TcpConnection::read, interrupt procedure, epoll_ctl failed, " + lastErrorMessage());
             }
 
             contextPair.readContext->interrupted = true;
@@ -167,7 +177,7 @@ std::size_t TcpConnection::write(const uint8_t* data, size_t size) {
 
   ssize_t transferred = ::send(connection, (void *)data, size, MSG_NOSIGNAL);
   if (transferred == -1) {
-    if (errno != EAGAIN){
+    if (errno != EAGAIN) {
       message = "send failed, " + lastErrorMessage();
     } else {
       epoll_event connectionEvent;
@@ -190,11 +200,11 @@ std::size_t TcpConnection::write(const uint8_t* data, size_t size) {
             assert(dispatcher != nullptr);
             assert(contextPair.writeContext != nullptr);
             epoll_event connectionEvent;
-            connectionEvent.events = 0;
+            connectionEvent.events = EPOLLONESHOT;
             connectionEvent.data.ptr = nullptr;
 
             if (epoll_ctl(dispatcher->getEpoll(), EPOLL_CTL_MOD, connection, &connectionEvent) == -1) {
-              throw std::runtime_error("TcpConnection::stop, epoll_ctl failed, " + lastErrorMessage());
+              throw std::runtime_error("TcpConnection::write, interrupt procedure, epoll_ctl failed, " + lastErrorMessage());
             }
 
             contextPair.writeContext->interrupted = true;
