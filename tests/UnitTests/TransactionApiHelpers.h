@@ -1,7 +1,19 @@
-// Copyright (c) 2011-2016 The Cryptonote developers
-// Copyright (c) 2014-2016 SDN developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+//
+// This file is part of Bytecoin.
+//
+// Bytecoin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Bytecoin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
@@ -66,12 +78,23 @@ namespace {
   }
 
   void addTestInput(ITransaction& transaction, uint64_t amount) {
-    KeyInput input;
-    input.amount = amount;
-    input.keyImage = generateKeyImage();
-    input.outputIndexes.emplace_back(1);
+    AccountKeys accountKeys = generateAccountKeys();
+    KeyPair txKey = generateKeyPair();
+    PublicKey outKey;
+    KeyDerivation derivation;
+    generate_key_derivation(accountKeys.address.viewPublicKey, txKey.secretKey, derivation);
+    derive_public_key(derivation, 0, accountKeys.address.spendPublicKey, outKey);
 
-    transaction.addInput(input);
+    TransactionTypes::InputKeyInfo info;
+    info.amount = amount;
+    info.outputs.emplace_back(TransactionTypes::GlobalOutput{outKey, 0});
+    info.realOutput.transactionPublicKey = txKey.publicKey;
+    info.realOutput.transactionIndex = 0;
+    info.realOutput.outputInTransaction = 0;
+
+    KeyPair ephKeys;
+    size_t index = transaction.addInput(accountKeys, info, ephKeys);
+    transaction.signInputKey(index, info, ephKeys);
   }
 
   TransactionOutputInformationIn addTestKeyOutput(ITransaction& transaction, uint64_t amount,
@@ -117,18 +140,12 @@ public:
   // inputs
   size_t addTestInput(uint64_t amount, const AccountKeys& senderKeys = generateAccountKeys());
   size_t addTestInput(uint64_t amount, std::vector<uint32_t> gouts, const AccountKeys& senderKeys = generateAccountKeys());
-  void addTestMultisignatureInput(uint64_t amount, const TransactionOutputInformation& t);
-  size_t addFakeMultisignatureInput(uint64_t amount, uint32_t globalOutputIndex, size_t signatureCount);
   void addInput(const AccountKeys& senderKeys, const TransactionOutputInformation& t);
-  void addMultisignatureInput(uint64_t amount, uint32_t signatures, uint32_t outputIndex, uint32_t term);
 
   // outputs
   TransactionOutputInformationIn addTestKeyOutput(uint64_t amount, uint32_t globalOutputIndex, const AccountKeys& senderKeys = generateAccountKeys());
-  TransactionOutputInformationIn addTestMultisignatureOutput(uint64_t amount, uint32_t globalOutputIndex);
-  TransactionOutputInformationIn addTestMultisignatureOutput(uint64_t amount, std::vector<AccountPublicAddress>& addresses, uint32_t globalOutputIndex);
   size_t addOutput(uint64_t amount, const AccountPublicAddress& to);
   size_t addOutput(uint64_t amount, const KeyOutput& out);
-  size_t addOutput(uint64_t amount, const MultisignatureOutput& out);
 
   // final step
   std::unique_ptr<ITransactionReader> build();
@@ -146,14 +163,7 @@ private:
       reinterpret_cast<Crypto::PublicKey&>(ephemeralKey));
   }
 
-  struct MsigInfo {
-    PublicKey transactionKey;
-    size_t outputIndex;
-    std::vector<AccountBase> accounts;
-  };
-
   std::unordered_map<size_t, std::pair<TransactionTypes::InputKeyInfo, KeyPair>> keys;
-  std::unordered_map<size_t, MsigInfo> msigInputs;
 
   std::unique_ptr<ITransaction> tx;
   Crypto::Hash transactionHash;
@@ -202,47 +212,4 @@ namespace CryptoNote {
 inline bool operator == (const AccountKeys& a, const AccountKeys& b) { 
   return memcmp(&a, &b, sizeof(a)) == 0; 
 }
-
-inline bool operator==(const TransactionOutputInformation& l, const TransactionOutputInformation& r) {
-  if (l.type != r.type) {
-    return false;
-  }
-
-  if (l.amount != r.amount) {
-    return false;
-  }
-
-  if (l.globalOutputIndex != r.globalOutputIndex) {
-    return false;
-  }
-
-  if (l.outputInTransaction != r.outputInTransaction) {
-    return false;
-  }
-
-  if (l.transactionHash != r.transactionHash) {
-    return false;
-  }
-
-  if (l.transactionPublicKey != r.transactionPublicKey) {
-    return false;
-  }
-
-  if (l.type == TransactionTypes::OutputType::Key) {
-    if (l.outputKey != r.outputKey) {
-      return false;
-    }
-  } else if (l.type == TransactionTypes::OutputType::Multisignature) {
-    if (l.requiredSignatures != r.requiredSignatures) {
-      return false;
-    }
-
-    if (l.term != r.term) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 }

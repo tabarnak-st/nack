@@ -1,7 +1,19 @@
-// Copyright (c) 2011-2016 The Cryptonote developers
-// Copyright (c) 2014-2016 SDN developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+//
+// This file is part of Bytecoin.
+//
+// Bytecoin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Bytecoin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "gtest/gtest.h"
 
@@ -22,7 +34,7 @@ using namespace CryptoNote;
 namespace {
   const size_t TEST_TRANSACTION_SPENDABLE_AGE = 1;
   const uint64_t TEST_OUTPUT_AMOUNT = 100;
-  const uint32_t TEST_BLOCK_HEIGHT = 99;
+  const uint64_t TEST_BLOCK_HEIGHT = 99;
   const uint32_t TEST_TRANSACTION_OUTPUT_GLOBAL_INDEX = 113;
   const uint32_t UNCONFIRMED = std::numeric_limits<uint32_t>::max();
   const uint64_t TEST_TIMESTAMP = 1000000;
@@ -32,7 +44,7 @@ namespace {
 
     TransfersContainerKeyImage() :
       currency(CurrencyBuilder(logger).currency()), 
-      container(currency, TEST_TRANSACTION_SPENDABLE_AGE), 
+      container(currency, logger, TEST_TRANSACTION_SPENDABLE_AGE), 
       account(generateAccountKeys()),
       txTemplate(createTransaction()) {
       txTemplate->getTransactionSecretKey(txSecretKey);
@@ -70,7 +82,7 @@ namespace {
       auto outInfo = tx.addTestKeyOutput(amount, outputIndex, account);
 
       auto finalTx = tx.build();
-      EXPECT_TRUE(container.addTransaction(TransactionBlockInfo{ height, 1000000, txIndex }, *finalTx, { outInfo }, {}));
+      EXPECT_TRUE(container.addTransaction(TransactionBlockInfo{ height, 1000000, txIndex }, *finalTx, { outInfo }));
       return finalTx;
     }
 
@@ -80,7 +92,7 @@ namespace {
       auto outputIndex = (height == WALLET_LEGACY_UNCONFIRMED_TRANSACTION_HEIGHT) ? UNCONFIRMED_TRANSACTION_GLOBAL_OUTPUT_INDEX : TEST_TRANSACTION_OUTPUT_GLOBAL_INDEX;
       auto outInfo = tx.addTestKeyOutput(TEST_OUTPUT_AMOUNT, outputIndex, account);
       auto finalTx = tx.build();
-      EXPECT_TRUE(container.addTransaction(blockInfo(height), *finalTx, { outInfo }, {}));
+      EXPECT_TRUE(container.addTransaction(blockInfo(height), *finalTx, { outInfo }));
       return finalTx;
     }
 
@@ -115,7 +127,7 @@ namespace {
       }
 
       auto finalTx = tx.build();
-      EXPECT_TRUE(container.addTransaction(blockInfo(height), *finalTx, transfers, {}));
+      EXPECT_TRUE(container.addTransaction(blockInfo(height), *finalTx, transfers));
       return finalTx;
     }
 
@@ -144,7 +156,7 @@ TEST_F(TransfersContainerKeyImage, addTransaction_addingSecondUnconfirmedTransfe
   auto tx1out = tx1b.addTestKeyOutput(TEST_OUTPUT_AMOUNT, UNCONFIRMED, account);
   auto tx1 = tx1b.build();
 
-  ASSERT_TRUE(container.addTransaction({ WALLET_LEGACY_UNCONFIRMED_TRANSACTION_HEIGHT, 100000 }, *tx1, { tx1out }, {}));
+  ASSERT_TRUE(container.addTransaction({ WALLET_LEGACY_UNCONFIRMED_TRANSACTION_HEIGHT, 100000 }, *tx1, { tx1out }));
   ASSERT_EQ(1, container.transactionsCount());
   ASSERT_EQ(TEST_OUTPUT_AMOUNT, container.balance(ITransfersContainer::IncludeAllLocked));
   ASSERT_EQ(1, outputsCount(ITransfersContainer::IncludeAllLocked));
@@ -158,7 +170,7 @@ TEST_F(TransfersContainerKeyImage, addTransaction_addingSecondUnconfirmedTransfe
   ASSERT_EQ(tx1out.keyImage, tx2out.keyImage);
   ASSERT_NE(tx1->getTransactionPrefixHash(), tx2->getTransactionPrefixHash());
 
-  ASSERT_TRUE(container.addTransaction({ WALLET_LEGACY_UNCONFIRMED_TRANSACTION_HEIGHT, 100000 }, *tx2, { tx2out }, {}));
+  ASSERT_TRUE(container.addTransaction({ WALLET_LEGACY_UNCONFIRMED_TRANSACTION_HEIGHT, 100000 }, *tx2, { tx2out }));
 
   ASSERT_EQ(2, container.transactionsCount());
   ASSERT_EQ(0, container.balance(ITransfersContainer::IncludeAllLocked)); // transactions' outputs should shadow one another
@@ -182,7 +194,7 @@ TEST_F(TransfersContainerKeyImage, addTransaction_unconfirmedTransferAddedAfterC
   tx2.addTestInput(TEST_OUTPUT_AMOUNT);
   auto tx2out = tx2.addTestKeyOutput(TEST_OUTPUT_AMOUNT, UNCONFIRMED, account);
 
-  ASSERT_TRUE(container.addTransaction({ WALLET_LEGACY_UNCONFIRMED_TRANSACTION_HEIGHT, 100000 }, *tx2.build(), { tx2out }, {}));
+  ASSERT_TRUE(container.addTransaction({ WALLET_LEGACY_UNCONFIRMED_TRANSACTION_HEIGHT, 100000 }, *tx2.build(), { tx2out }));
 
   ASSERT_EQ(2, container.transactionsCount());
   ASSERT_EQ(TEST_OUTPUT_AMOUNT, container.balance(ITransfersContainer::IncludeAllUnlocked));
@@ -321,7 +333,7 @@ public:
     TestTransactionBuilder spendTx;
     spendTx.addInput(account, outInfo);
     spendTx.addTestKeyOutput(amount, TEST_TRANSACTION_OUTPUT_GLOBAL_INDEX);
-    return container.addTransaction({ TEST_BLOCK_HEIGHT + TEST_TRANSACTION_SPENDABLE_AGE, TEST_TIMESTAMP, 0 }, *spendTx.build(), {}, {});
+    return container.addTransaction({ TEST_BLOCK_HEIGHT + TEST_TRANSACTION_SPENDABLE_AGE, TEST_TIMESTAMP, 0 }, *spendTx.build(), {});
   }
 };
 
@@ -601,9 +613,7 @@ TEST_F(TransfersContainerKeyImage, removeConfirmed_oneOfThree) {
 
   ASSERT_EQ(TEST_OUTPUT_AMOUNT, container.balance(ITransfersContainer::IncludeAllUnlocked));
 
-  std::vector<Hash> deletedTransactions;
-  std::vector<TransactionOutputInformation> lockedTransfers;
-  container.detach(TEST_BLOCK_HEIGHT + 2, deletedTransactions, lockedTransfers);
+  container.detach(TEST_BLOCK_HEIGHT + 2);
   ASSERT_EQ(TEST_OUTPUT_AMOUNT, container.balance(ITransfersContainer::IncludeAllUnlocked));
 }
 
@@ -613,9 +623,7 @@ TEST_F(TransfersContainerKeyImage, removeConfirmed_oneOfTwo) {
 
   ASSERT_EQ(TEST_OUTPUT_AMOUNT, container.balance(ITransfersContainer::IncludeAllUnlocked));
 
-  std::vector<Hash> deletedTransactions;
-  std::vector<TransactionOutputInformation> lockedTransfers;
-  container.detach(TEST_BLOCK_HEIGHT + 1, deletedTransactions, lockedTransfers);
+  container.detach(TEST_BLOCK_HEIGHT + 1);
   ASSERT_EQ(TEST_OUTPUT_AMOUNT, container.balance(ITransfersContainer::IncludeStateSoftLocked | ITransfersContainer::IncludeTypeAll));
 }
 
@@ -624,10 +632,7 @@ TEST_F(TransfersContainerKeyImage, removeConfirmed_revealsUnconfirmed) {
   addTransactionWithFixedKey(WALLET_LEGACY_UNCONFIRMED_TRANSACTION_HEIGHT, 2, TEST_OUTPUT_AMOUNT * 2);
   ASSERT_EQ(TEST_OUTPUT_AMOUNT, container.balance(ITransfersContainer::IncludeAll));
 
-  std::vector<Hash> deletedTransactions;
-  std::vector<TransactionOutputInformation> lockedTransfers;
-  container.detach(TEST_BLOCK_HEIGHT, deletedTransactions, lockedTransfers);
-  ASSERT_EQ(1, deletedTransactions.size());
+  ASSERT_EQ(1, container.detach(TEST_BLOCK_HEIGHT).size());
   ASSERT_EQ(TEST_OUTPUT_AMOUNT * 2, container.balance(ITransfersContainer::IncludeAll));
   ASSERT_EQ(TEST_OUTPUT_AMOUNT * 2, container.balance(ITransfersContainer::IncludeAllLocked));
 }
@@ -639,11 +644,7 @@ TEST_F(TransfersContainerKeyImage, removeConfirmed_twoUnconfirmedHidden) {
 
   ASSERT_EQ(TEST_OUTPUT_AMOUNT, container.balance(ITransfersContainer::IncludeAll));
 
-  std::vector<Hash> deletedTransactions;
-  std::vector<TransactionOutputInformation> lockedTransfers;
-  container.detach(TEST_BLOCK_HEIGHT, deletedTransactions, lockedTransfers);
-
-  ASSERT_EQ(1, deletedTransactions.size());
+  ASSERT_EQ(1, container.detach(TEST_BLOCK_HEIGHT).size());
   ASSERT_EQ(0, container.balance(ITransfersContainer::IncludeAll));
 }
 
@@ -653,11 +654,7 @@ TEST_F(TransfersContainerKeyImage, removeConfirmed_twoConfirmedOneUnconfirmedHid
   addTransactionWithFixedKey(WALLET_LEGACY_UNCONFIRMED_TRANSACTION_HEIGHT, 3, TEST_OUTPUT_AMOUNT * 3);
   ASSERT_EQ(TEST_OUTPUT_AMOUNT, container.balance(ITransfersContainer::IncludeAll));
 
-  std::vector<Hash> deletedTransactions;
-  std::vector<TransactionOutputInformation> lockedTransfers;
-  container.detach(TEST_BLOCK_HEIGHT + 1, deletedTransactions, lockedTransfers);
-
-  ASSERT_EQ(1, deletedTransactions.size());
+  ASSERT_EQ(1, container.detach(TEST_BLOCK_HEIGHT + 1).size());
   ASSERT_EQ(TEST_OUTPUT_AMOUNT, container.balance(ITransfersContainer::IncludeAll));
 }
 
@@ -670,11 +667,7 @@ TEST_F(TransfersContainerKeyImage, removeConfirmed_oneSpentOneConfirmed) {
   auto tx2 = addTransactionWithFixedKey(TEST_BLOCK_HEIGHT + TEST_TRANSACTION_SPENDABLE_AGE + 1, 2, TEST_OUTPUT_AMOUNT * 2);
   ASSERT_EQ(0, container.balance(ITransfersContainer::IncludeAll));
 
-  std::vector<Hash> deletedTransactions;
-  std::vector<TransactionOutputInformation> lockedTransfers;
-  container.detach(TEST_BLOCK_HEIGHT + TEST_TRANSACTION_SPENDABLE_AGE + 1, deletedTransactions, lockedTransfers);
-
-  ASSERT_EQ(1, deletedTransactions.size());
+  ASSERT_EQ(1, container.detach(TEST_BLOCK_HEIGHT + TEST_TRANSACTION_SPENDABLE_AGE + 1).size());
   ASSERT_EQ(0, container.balance(ITransfersContainer::IncludeAll));
 }
 
@@ -689,11 +682,7 @@ TEST_F(TransfersContainerKeyImage, removeConfirmed_oneSpentTwoConfirmed) {
   ASSERT_EQ(0, container.balance(ITransfersContainer::IncludeAll));
   ASSERT_EQ(4, container.transactionsCount());
 
-  std::vector<Hash> deletedTransactions;
-  std::vector<TransactionOutputInformation> lockedTransfers;
-  container.detach(TEST_BLOCK_HEIGHT + TEST_TRANSACTION_SPENDABLE_AGE + 2, deletedTransactions, lockedTransfers);
-
-  ASSERT_EQ(1, deletedTransactions.size());
+  ASSERT_EQ(1, container.detach(TEST_BLOCK_HEIGHT + TEST_TRANSACTION_SPENDABLE_AGE + 2).size());
   ASSERT_EQ(3, container.transactionsCount());
   ASSERT_EQ(0, container.balance(ITransfersContainer::IncludeAll));
 }

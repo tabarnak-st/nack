@@ -1,20 +1,17 @@
-Release notes 0.1.0
+Release notes 0.0.1
 
-- Fork Royalties
+- fork Github Amajurez/Bytecoin
+- clean up files
 
-V0.1.1
+Release notes 0.0.1 b0
 
-- Minor bug fixed
+- fixed Inodes
+- updates p2pnetwork
 
-V0.1.2
+Release notes 0.0.1 b1
 
-- Fork Forknote
+- updates seed and removed checkpoint
 
-V0.1.2 B1
+Release notes 0.0.1 b2
 
-- Fixed bug on struct
-
-v0.1.2 B2
-
-- Fixed block explorer
-
+- gcc7 small fixed

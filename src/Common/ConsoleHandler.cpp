@@ -1,11 +1,19 @@
-// Copyright (c) 2011-2017 The Cryptonote developers
-// Copyright (c) 2014-2017 XDN developers
-// Copyright (c) 2016-2017 BXC developers
-// Copyright (c) 2017 Royalties developers
-// Copyright (c) 2010-2017 Kohaku developers
-// Copyright (c) 2017 Wayang developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+//
+// This file is part of Bytecoin.
+//
+// Bytecoin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Bytecoin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ConsoleHandler.h"
 
@@ -14,6 +22,9 @@
 #include <sstream>
 
 #ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <Windows.h>
 #else
 #include <unistd.h>
@@ -196,40 +207,9 @@ bool ConsoleHandler::runCommand(const std::vector<std::string>& cmdAndArgs) {
 }
 
 void ConsoleHandler::handleCommand(const std::string& cmd) {
-  bool parseString = false;
-  std::string arg;
-  std::vector<std::string> argList;
-
-  for (auto ch : cmd) {
-    switch (ch) {
-    case ' ':
-      if (parseString) {
-        arg += ch;
-      } else if (!arg.empty()) {
-        argList.emplace_back(std::move(arg));
-        arg.clear();
-      }
-      break;
-
-    case '"':
-      if (!arg.empty()) {
-        argList.emplace_back(std::move(arg));
-        arg.clear();
-      }
-
-      parseString = !parseString;
-      break;
-
-    default:
-      arg += ch;
-    }
-  }
-
-  if (!arg.empty()) {
-    argList.emplace_back(std::move(arg));
-  }
-
-  runCommand(argList);
+  std::vector<std::string> args;
+  boost::split(args, cmd, boost::is_any_of(" "), boost::token_compress_on);
+  runCommand(args);
 }
 
 void ConsoleHandler::handlerThread() {
