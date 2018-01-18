@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -19,5 +19,5 @@
 
 namespace CryptoNote
 {
-  const static boost::uuids::uuid BYTECOIN_NETWORK = { { 0x11 ,0x10, 0x01, 0x11 , 0x11, 0x00 , 0x01, 0x01, 0x10, 0x11, 0x00, 0x12, 0x10, 0x11, 0x01, 0x10} }; //Bender's nightmare
+  const static boost::uuids::uuid BYTECOIN_NETWORK = { { 0x09 ,0x10, 0x01, 0x11 , 0x11, 0x00 , 0x01, 0x01, 0x10, 0x11, 0x00, 0x12, 0x10, 0x11, 0x01, 0x10} }; //Bender's nightmare
 }

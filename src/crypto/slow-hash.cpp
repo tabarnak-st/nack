@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, Kohaku developers
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 //
 // This file is part of Bytecoin.
 //
@@ -66,9 +66,9 @@ namespace Crypto {
   }
 
   cn_context::~cn_context() {
-    //if (munmap(data, MAP_SIZE) != 0) {
-      //throw bad_alloc();
-    //}
+    if (munmap(data, MAP_SIZE) != 0) {
+      throw bad_alloc();
+    }
   }
 
 #endif

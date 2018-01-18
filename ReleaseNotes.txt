@@ -1,6 +1,13 @@
 Release notes 0.0.1
 
-- Fork Github Amajurez/Bytecoin
-- Clean up files
+- fork Github Amajurez/Bytecoin
+- clean up files
 
+Release notes 0.0.1 b0
 
+- fixed Inodes
+- updates p2pnetwork
+
+Release notes 0.0.1 b1
+
+- updates seed and removed checkpoint
