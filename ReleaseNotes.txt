@@ -11,3 +11,7 @@ Release notes 0.0.1 b0
 Release notes 0.0.1 b1
 
 - updates seed and removed checkpoint
+
+Release notes 0.0.1 b2
+
+- gcc7 small fixed
