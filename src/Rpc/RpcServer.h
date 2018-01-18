@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -21,6 +21,7 @@
 #include <unordered_map>
 
 #include <Logging/LoggerRef.h>
+#include "Common/Math.h"
 #include "CoreRpcServerCommandsDefinitions.h"
 
 namespace CryptoNote {

@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -563,6 +563,7 @@ logger(currency.logger) {
 }
 
 CurrencyBuilder::CurrencyBuilder(Logging::ILogger& log) : m_currency(log) {
+  cryptonoteName(CRYPTONOTE_NAME);
   maxBlockNumber(parameters::CRYPTONOTE_MAX_BLOCK_NUMBER);
   maxBlockBlobSize(parameters::CRYPTONOTE_MAX_BLOCK_BLOB_SIZE);
   maxTxSize(parameters::CRYPTONOTE_MAX_TX_SIZE);
