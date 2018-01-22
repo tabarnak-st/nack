@@ -14,4 +14,15 @@ Release notes 0.0.1 b1
 
 Release notes 0.0.1 b2
 
-- gcc7 small fixed
+- gcc7 small fixed by vkobel
+
+Release notes 0.0.1 b3
+
+- added premine by Vetro7
+- fixed hangup in Dispatcher::yield() in Linux by rs-blashyrkh
+- docs: typo nuber to number by JaysonH91
+- rocksdb clean by leviarcoin
+- walletd, not walled by paulmadore
+- fix verification failed by RocksteadyTC
+- change supply and longer difficult target
+- decrease size block. [for prepare split chain method[EvoChain]]

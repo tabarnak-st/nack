@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -22,7 +22,7 @@ namespace CryptoNote
   struct block_verification_context
   {
     bool m_added_to_main_chain;
-    bool m_verifivation_failed; //bad block, should drop connection
+    bool m_verification_failed; //bad block, should drop connection
     bool m_marked_as_orphaned;
     bool m_already_exists;
     bool m_switched_to_alt_chain;

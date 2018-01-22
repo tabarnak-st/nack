@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -1118,7 +1118,7 @@ void WalletService::replaceWithNewWallet(const Crypto::SecretKey& viewSecretKey)
 
     if (!boost::filesystem::exists(backup)) {
       boost::filesystem::rename(config.walletFile, backup);
-      logger(Logging::DEBUGGING) << "Walled file '" << config.walletFile  << "' backed up to '" << backup << '\'';
+      logger(Logging::DEBUGGING) << "Wallet file '" << config.walletFile  << "' backed up to '" << backup << '\'';
       break;
     }
   }
