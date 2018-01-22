@@ -65,6 +65,38 @@ and search //command_line::add_arg(desc_cmd_sett, arg_genesis_block_reward_addre
 //premine
 [function]
 
+seach this
+
+ //premine
+  //  CurrencyBuilder& genesisBlockReward(uint64_t val) { m_currency.m_genesisBlockReward = val; return *this; }
+
+you can remove "//"
+
+ICO & POS Enable :
+
+- Edit src/cryptonoteconfig.h
+
+//coin ico
+const uint64_t POINT                                         = UINT64_C(1000);        // pow(10, 3)
+
+-----
+
+//premine
+const uint64_t COIN                                           = UINT64_C(1000000);     // pow(10, 6)
+
+-----
+
+//ico & pos
+const uint64_t START_BLOCK_REWARD                            = (UINT64_C(100) * parameters::POINT);
+const uint64_t ICO_BLOCK_REWARD	                             = (UINT64_C(18446744073) * parameters::COIN); // 18.4 billion ICO
+const uint64_t MAX_BLOCK_REWARD                              = (UINT64_C(10) * parameters::COIN);
+const uint64_t REWARD_INCREASE_INTERVAL = (UINT64_C(264000));
+
+- Edit src/cryptonotecore/currency.cpp
+
+//ico & pos
+[function]
+
 you can remove "//"
 
 For Become Collabolator can PM us!or just git push on develop. we will review your codes

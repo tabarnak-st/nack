@@ -33,14 +33,17 @@ const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT            = 60 * 60 * 2;
 
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW             = 60;
 
-//coin
+//coin ico
 const uint64_t POINT                                         = UINT64_C(1000);        // pow(10, 3)
 
 // MONEY_SUPPLY - total number coins to be generated
 const uint64_t MONEY_SUPPLY                                  = UINT64_C(1000000);
 const unsigned EMISSION_SPEED_FACTOR                         = 18;
 static_assert(EMISSION_SPEED_FACTOR <= 8 * sizeof(uint64_t), "Bad EMISSION_SPEED_FACTOR");
-const uint64_t GENESIS_BLOCK_REWARD	                      = UINT64_C(500);
+
+//premine
+const uint64_t COIN                                           = UINT64_C(1000000);     // pow(10, 6)
+const uint64_t GENESIS_BLOCK_REWARD	                      = (UINT64_C(18000)* parameters::COIN); // 1.8 trillion premine
 
 const size_t   CRYPTONOTE_REWARD_BLOCKS_WINDOW               = 100;
 const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE     = 100000; //size of block (bytes) after which reward for block calculated using block size
@@ -49,8 +52,8 @@ const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1  = 10000;
 const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_CURRENT = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE;
 const size_t   CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE        = 600;
 const size_t   CRYPTONOTE_DISPLAY_DECIMAL_POINT              = 8;
-const uint64_t MINIMUM_FEE                                   = UINT64_C(1000000);    // pow(10, 6)
-const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(1000000);    // pow(10, 6)
+const uint64_t MINIMUM_FEE                                   = UINT64_C(100);    // pow(10, 6)
+const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(100);    // pow(10, 6)
 
 const uint64_t DIFFICULTY_TARGET                             = 360; // seconds
 const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 60 * 60 / DIFFICULTY_TARGET;
@@ -89,6 +92,12 @@ const char     CRYPTONOTE_POOLDATA_FILENAME[]                = "poolstate.bin";
 const char     P2P_NET_DATA_FILENAME[]                       = "p2pstate.bin";
 const char     MINER_CONFIG_FILE_NAME[]                      = "miner_conf.json";
 } // parameters
+
+//ico & pos
+const uint64_t START_BLOCK_REWARD                            = (UINT64_C(100) * parameters::POINT);
+const uint64_t ICO_BLOCK_REWARD	                             = (UINT64_C(18446744073) * parameters::COIN); // 18.4 billion ICO
+const uint64_t MAX_BLOCK_REWARD                              = (UINT64_C(10) * parameters::COIN);
+const uint64_t REWARD_INCREASE_INTERVAL			     = (UINT64_C(100));
 
 const char     CRYPTONOTE_NAME[]                             = "dirham";
 
