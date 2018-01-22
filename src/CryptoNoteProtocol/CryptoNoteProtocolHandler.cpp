@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -356,7 +356,7 @@ int CryptoNoteProtocolHandler::handle_notify_new_transactions(int command, NOTIF
 
   for (auto tx_blob_it = arg.txs.begin(); tx_blob_it != arg.txs.end();) {
     if (!m_core.addTransactionToPool(*tx_blob_it)) {
-      logger(Logging::INFO) << context << "Tx verification failed";
+      logger(Logging::DEBUGGING) << context << "Tx verification failed";
       tx_blob_it = arg.txs.erase(tx_blob_it);
     } else {
       ++tx_blob_it;
