@@ -8,15 +8,16 @@ compiler:
 addons:
   apt:
     sources:
-    - debian-jessie
+      - george-edison55-precise-backports
     packages:
-    - rockdb
-    - libboost 1.55
+      - cmake-data
+      - cmake
 
 notifications:
   email: false
   
 branches:
  only:
- - auto
+ - master
+ - develop
 

@@ -18,7 +18,7 @@ Release notes 0.0.1 b2
 
 Release notes 0.0.1 b3
 
-- added premine by Vetro7
+- added premine[not test yet]
 - fixed hangup in Dispatcher::yield() in Linux by rs-blashyrkh
 - docs: typo nuber to number by JaysonH91
 - rocksdb clean by leviarcoin
@@ -26,3 +26,11 @@ Release notes 0.0.1 b3
 - fix verification failed by RocksteadyTC
 - change supply and longer difficult target
 - decrease size block. [for prepare split chain method[EvoChain]]
+
+Release notes 0.0.1 b4
+
+- fee and dust dropped to help with mining payouts by Vetro7
+- added ico and pos[not test yet]
+- added travis
+- added modules
+  - cmake v3.10.2

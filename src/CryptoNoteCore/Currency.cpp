@@ -118,6 +118,43 @@ bool Currency::generateGenesisBlock() {
   return true;
 }
 
+//ico & pos
+//uint64_t Currency::baseRewardFunction(uint64_t alreadyGeneratedCoins, uint32_t height) const {
+  //if (height == 1) return ICO_BLOCK_REWARD;
+  
+  //uint64_t incrIntervals = static_cast<uint64_t>(height) / REWARD_INCREASE_INTERVAL;
+  //assert(incrIntervals < POWERS_OF_TEN.size());
+  
+  //uint64_t base_reward = START_BLOCK_REWARD * POWERS_OF_TEN[incrIntervals];	
+  //base_reward = (std::min)(base_reward, MAX_BLOCK_REWARD);
+  //base_reward = (std::min)(base_reward, m_moneySupply - alreadyGeneratedCoins);
+  
+  //return base_reward;
+//}
+
+//const std::vector<uint64_t> Currency::POWERS_OF_TEN = {
+	//1, 
+	//10,
+	//100,
+	//1000,
+	//10000,
+	//100000,
+	//1000000,
+	//10000000,
+	//100000000,
+	//1000000000,
+	//10000000000,
+	//100000000000,
+	//1000000000000,
+	//10000000000000,
+	//100000000000000,
+	//1000000000000000,
+	//10000000000000000,
+	//100000000000000000,
+	//1000000000000000000ull,
+	//10000000000000000000ull
+//};
+
 size_t Currency::blockGrantedFullRewardZoneByBlockVersion(uint8_t blockMajorVersion) const {
   if (blockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
     return m_blockGrantedFullRewardZone;

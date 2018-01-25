@@ -115,6 +115,7 @@ int main(int argc, char* argv[])
     command_line::add_arg(desc_cmd_sett, arg_log_level);
     command_line::add_arg(desc_cmd_sett, arg_console);
     command_line::add_arg(desc_cmd_sett, arg_testnet_on);
+    //premine
     //command_line::add_arg(desc_cmd_sett, arg_genesis_block_reward_address);
 
     RpcServerConfig::initOptions(desc_cmd_sett);

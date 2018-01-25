@@ -1,4 +1,4 @@
-How to install:
+##How to install:
 
 This for required old linux distribution package since we try upgrade new
 
@@ -32,7 +32,7 @@ Mac
 
 - Need instructor
 
-Premine Enable :
+#Premine Enable :
 
 - Edit src/daemon/daemon.cpp
 
@@ -65,6 +65,61 @@ and search //command_line::add_arg(desc_cmd_sett, arg_genesis_block_reward_addre
 //premine
 [function]
 
+seach this
+
+ //premine
+  //  CurrencyBuilder& genesisBlockReward(uint64_t val) { m_currency.m_genesisBlockReward = val; return *this; }
+
 you can remove "//"
+
+#ICO & POS Enable :
+
+- Edit src/cryptonoteconfig.h
+
+//coin ico
+const uint64_t POINT                                         = UINT64_C(1000);        // pow(10, 3)
+
+-----
+
+//premine
+const uint64_t COIN                                           = UINT64_C(1000000);     // pow(10, 6)
+
+-----
+
+//ico & pos
+const uint64_t START_BLOCK_REWARD                            = (UINT64_C(100) * parameters::POINT);
+const uint64_t ICO_BLOCK_REWARD	                             = (UINT64_C(18446744073) * parameters::COIN); // 18.4 billion ICO
+const uint64_t MAX_BLOCK_REWARD                              = (UINT64_C(10) * parameters::COIN);
+const uint64_t REWARD_INCREASE_INTERVAL = (UINT64_C(264000));
+
+- Edit src/cryptonotecore/currency.cpp
+
+//ico & pos
+[function]
+
+you can remove "//"
+
+#Cmake update and and downgrade
+
+- you can easy used what cmake compability version
+
+For Cmake 3.10.x used cmakelist.txt
+For older 3.x used cmakelist-old.txt and rename it change cmakelist.txt to cmakelist-new.txt
+
+#What new on cmake?
+try used git submodule init && git submodule update --remote on console and see log for it. or readme.md on modules
+
+#How to upgrade?
+go to terminal and input command cd DirhamCli
+
+after that git submodule init && git submodule update --remote
+
+then go to cd cmake && ./bootstrap
+
+after that make
+
+and final make install
+
+you have new cmake ;)
 
 For Become Collabolator can PM us!or just git push on develop. we will review your codes
