@@ -31,3 +31,6 @@ Release notes 0.0.1 b4
 
 - fee and dust dropped to help with mining payouts by Vetro7
 - added ico and pos[not test yet]
+- added travis
+- added modules
+  - cmake v3.10.2

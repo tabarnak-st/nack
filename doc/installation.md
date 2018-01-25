@@ -1,4 +1,4 @@
-How to install:
+##How to install:
 
 This for required old linux distribution package since we try upgrade new
 
@@ -32,7 +32,7 @@ Mac
 
 - Need instructor
 
-Premine Enable :
+#Premine Enable :
 
 - Edit src/daemon/daemon.cpp
 
@@ -72,7 +72,7 @@ seach this
 
 you can remove "//"
 
-ICO & POS Enable :
+#ICO & POS Enable :
 
 - Edit src/cryptonoteconfig.h
 
@@ -98,5 +98,28 @@ const uint64_t REWARD_INCREASE_INTERVAL = (UINT64_C(264000));
 [function]
 
 you can remove "//"
+
+#Cmake update and and downgrade
+
+- you can easy used what cmake compability version
+
+For Cmake 3.10.x used cmakelist.txt
+For older 3.x used cmakelist-old.txt and rename it change cmakelist.txt to cmakelist-new.txt
+
+#What new on cmake?
+try used git submodule init && git submodule update --remote on console and see log for it. or readme.md on modules
+
+#How to upgrade?
+go to terminal and input command cd DirhamCli
+
+after that git submodule init && git submodule update --remote
+
+then go to cd cmake && ./bootstrap
+
+after that make
+
+and final make install
+
+you have new cmake ;)
 
 For Become Collabolator can PM us!or just git push on develop. we will review your codes
