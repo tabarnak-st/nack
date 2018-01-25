@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/FndNur1Labs/DirhamCli.svg?branch=master)](https://travis-ci.org/FndNur1Labs/DirhamCli/)
+
 # Dirham
 From bottom sea to come outside
 
