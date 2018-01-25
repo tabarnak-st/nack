@@ -1,0 +1,22 @@
+language: cpp
+sudo: false
+
+compiler:
+- clang
+- gcc
+
+addons:
+  apt:
+    sources:
+    - debian-jessie
+    packages:
+    - rockdb
+    - libboost 1.55
+
+notifications:
+  email: false
+  
+branches:
+ only:
+ - auto
+
