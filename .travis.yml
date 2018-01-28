@@ -1,6 +1,7 @@
 language: cpp
 sudo: false
 script: make
+dist: jessie
 matrix:
   include:
     # works on debian-jessir
