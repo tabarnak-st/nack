@@ -15,5 +15,5 @@ matrix:
             - cmake-data
             - cmake            
 before_install:
-  - sudo chmod +x test
+  - sudo chmod +x test.sh
   - ./test.sh
