@@ -114,7 +114,7 @@ go to terminal and input command cd DirhamCli
 
 after that git submodule init && git submodule update --remote
 
-then go to cd cmake && ./bootstrap
+then go to cd modules/cmake && ./bootstrap
 
 after that make
 
