@@ -1,7 +1,7 @@
 language: cpp
 sudo: false
 dist: trusty
-install: ./test.sh
+install: automake autoconf
 script: make
 matrix:
   include:
@@ -14,3 +14,5 @@ matrix:
           packages:
             - cmake-data
             - cmake            
+before_install:
+  - ./test.sh
