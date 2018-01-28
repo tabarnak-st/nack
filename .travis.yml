@@ -1,6 +1,7 @@
 language: cpp
 sudo: false
 dist: trusty
+script:
 matrix:
   include:
     # works on debian-jessir
@@ -12,5 +13,8 @@ matrix:
           packages:
             - cmake-data
             - cmake
-          script:
-            - ./test.sh
+          script:make
+            
+
+before_install:
+         - ./test.sh 
