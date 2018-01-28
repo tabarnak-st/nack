@@ -1,24 +1,14 @@
 language: cpp
 sudo: false
-
-compiler:
-- clang
-- gcc
-
-addons:
-  apt:
-    sources:
-      - george-edison55-precise-backports
-    packages:
-      - cmake-data
-      - cmake
-
-notifications:
-  email: false
-  
-branches:
- only:
- - master
- - develop
- 
- script: make
+script: make
+matrix:
+  include:
+    # works on debian-jessir
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - george-edison55-precise-backports
+          packages:
+            - cmake-data
+            - cmake
