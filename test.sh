@@ -7,4 +7,3 @@ sudo apt-get install -y -qq qt5-default python-sphinx texlive-latex-base inotify
 sudo apt-get install -y -qq libminiupnpc-dev git sqlite3 libsqlite3-dev g++ libpng-dev git g++ gedit python make libbz2-dev 
 sudo apt-get install -y -qq libdb++-dev libdb-dev libssl-dev openssl libreadline-dev autoconf libtool git libleveldb-dev 
 sudo apt-get install -y -qq libblkid-dev e2fslibs-dev libboost-all-dev libaudit-dev
-make
