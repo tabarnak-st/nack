@@ -20,4 +20,5 @@ branches:
  only:
  - master
  - develop
-
+ 
+ script: make
