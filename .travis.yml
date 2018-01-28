@@ -1,6 +1,5 @@
 language: cpp
 sudo: false
-script: make
 dist: trusty
 matrix:
   include:
@@ -13,10 +12,5 @@ matrix:
           packages:
             - cmake-data
             - cmake
-            
-before_install:
-    - curl -OLs https://eddelbuettel.github.io/r-travis/run.sh && chmod 0755 run.sh
-  # add our launchpad repo which has (inter alia) the newest QuantLib
-    - sudo add-apt-repository -y ppa:edd/misc
-    - ./run.sh bootstrap
-    - sudo apt-get install -qq build-essential libqt4-dev qt5-qmake cmake qttools5-dev libqt5webkit5-dev qttools5-dev-tools qt5-default python-sphinx texlive-latex-base inotify-tools openssl libssl-dev libdb++-dev libminiupnpc-dev git sqlite3 libsqlite3-dev g++ libpng-dev git g++ gedit python make libbz2-dev libdb++-dev libdb-dev libssl-dev openssl libreadline-dev autoconf libtool git libleveldb-dev libblkid-dev e2fslibs-dev libboost-all-dev libaudit-dev
+          script:
+            - ./test.sh
