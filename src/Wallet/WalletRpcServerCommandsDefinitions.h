@@ -1,9 +1,19 @@
-// Copyright (c) 2011-2017 The Cryptonote developers
-// Copyright (c) 2014-2017 XDN developers
-// Copyright (c) 2016-2017 BXC developers
-// Copyright (c) 2017 Royalties developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+//
+// This file is part of Bytecoin.
+//
+// Bytecoin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Bytecoin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 #include "CryptoNoteProtocol/CryptoNoteProtocolDefinitions.h"
@@ -30,14 +40,10 @@ using CryptoNote::ISerializer;
     {
       uint64_t locked_amount;
       uint64_t available_balance;
-      uint64_t balance;            //<! \deprecated Use locked_amount + available_balance
-      uint64_t unlocked_balance;   //<! \deprecated Use available_balance
 
       void serialize(ISerializer& s) {
         KV_MEMBER(locked_amount)
         KV_MEMBER(available_balance)
-        KV_MEMBER(balance)
-        KV_MEMBER(unlocked_balance)
       }
     };
   };
@@ -46,22 +52,10 @@ using CryptoNote::ISerializer;
   {
     uint64_t amount;
     std::string address;
-    std::string message;
 
     void serialize(ISerializer& s) {
       KV_MEMBER(amount)
       KV_MEMBER(address)
-      KV_MEMBER(message)
-    }
-  };
-
-  struct TransferMessage {
-    std::string address;
-    std::string message;
-
-    void serialize(ISerializer& s) {
-      KV_MEMBER(address)
-      KV_MEMBER(message)
     }
   };
 
@@ -74,8 +68,6 @@ using CryptoNote::ISerializer;
       uint64_t mixin;
       uint64_t unlock_time;
       std::string payment_id;
-      std::list<TransferMessage> messages;
-      uint64_t ttl = 0;
 
       void serialize(ISerializer& s) {
         KV_MEMBER(destinations)
@@ -83,8 +75,6 @@ using CryptoNote::ISerializer;
         KV_MEMBER(mixin)
         KV_MEMBER(unlock_time)
         KV_MEMBER(payment_id)
-        KV_MEMBER(messages)
-        KV_MEMBER(ttl)
       }
     };
 
@@ -102,44 +92,6 @@ using CryptoNote::ISerializer;
   {
     typedef CryptoNote::EMPTY_STRUCT request;
     typedef CryptoNote::EMPTY_STRUCT response;
-  };
-
-  struct transaction_messages {
-    std::string tx_hash;
-    uint64_t tx_id;
-    uint32_t block_height;
-    uint64_t timestamp;
-    std::list<std::string> messages;
-
-    void serialize(ISerializer& s) {
-      KV_MEMBER(tx_hash);
-      KV_MEMBER(tx_id);
-      KV_MEMBER(block_height);
-      KV_MEMBER(timestamp);
-      KV_MEMBER(messages);
-    }
-  };
-
-  struct COMMAND_RPC_GET_MESSAGES {
-    struct request {
-      uint64_t first_tx_id = 0;
-      uint32_t tx_limit = std::numeric_limits<uint32_t>::max();
-
-      void serialize(ISerializer& s) {
-        KV_MEMBER(first_tx_id);
-        KV_MEMBER(tx_limit);
-      }
-    };
-
-    struct response {
-      uint64_t total_tx_count;
-      std::list<transaction_messages> tx_messages;
-
-      void serialize(ISerializer& s) {
-        KV_MEMBER(total_tx_count);
-        KV_MEMBER(tx_messages);
-      }
-    };
   };
 
   struct payment_details
