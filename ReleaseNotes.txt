@@ -34,3 +34,7 @@ Release notes 0.0.1 b4
 - added travis
 - added modules
   - cmake v3.10.2
+
+Release notes 0.0.1 b5
+
+- added build rainmanp7
