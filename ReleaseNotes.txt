@@ -38,3 +38,4 @@ Release notes 0.0.1 b4
 Release notes 0.0.1 b5
 
 - added build rainmanp7
+- remove connectivity tool rainmanp7
