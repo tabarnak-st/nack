@@ -10,7 +10,7 @@ apt update && apt upgrade
 
 - try copy and paste this
 
-apt install build-essential libqt4-dev qt5-qmake cmake qttools5-dev libqt5webkit5-dev qttools5-dev-tools qt5-default python-sphinx texlive-latex-base inotify-tools  openssl libssl-dev libdb++-dev libminiupnpc-dev git sqlite3 libsqlite3-dev g++ libpng-dev git g++ gedit python gcc-4.9 g++-4.9 make libbz2-dev libdb++-dev libdb-dev libssl-dev openssl libreadline-dev autoconf libtool git libleveldb-dev libblkid-dev e2fslibs-dev libboost-all-dev libaudit-dev
+apt install build-essential libboost-all-dev
 
 - try clone it used this
 
@@ -31,6 +31,18 @@ Debian Strech && Ubuntu 16.x
 Mac
 
 - Need instructor
+
+#build own coin
+
+- you can see reference of cryptonote[google it]
+
+Keyword :
+
+you must edit this files src/CryptoNoteConfig.h, src/version.h, P2p/P2pNetworks.h
+
+- after that edit all here to your version and make[build]
+
+- and run on build/release/src/
 
 #Premine Enable :
 
