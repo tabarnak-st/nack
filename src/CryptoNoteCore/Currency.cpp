@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
+// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -155,13 +155,47 @@ bool Currency::generateGenesisBlock() {
 	//10000000000000000000ull
 //};
 
+size_t Currency::difficultyWindowByBlockVersion(uint8_t blockMajorVersion) const {
+  if (blockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
+    return m_difficultyWindow;
+  } else if (blockMajorVersion == BLOCK_MAJOR_VERSION_2) {
+    return m_difficultyWindowV2;
+  } else {
+    return m_difficultyWindowV1;
+  }
+}
+
+size_t Currency::difficultyLagByBlockVersion(uint8_t blockMajorVersion) const {
+  if (blockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
+    return m_difficultyLag;
+  } else if (blockMajorVersion == BLOCK_MAJOR_VERSION_2) {
+    return m_difficultyLagV2;
+  } else {
+    return m_difficultyLagV1;
+  }
+}
+
+size_t Currency::difficultyCutByBlockVersion(uint8_t blockMajorVersion) const {
+  if (blockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
+    return m_difficultyCut;
+  } else if (blockMajorVersion == BLOCK_MAJOR_VERSION_2) {
+    return m_difficultyCutV2;
+  } else {
+    return m_difficultyCutV1;
+  }
+}
+
+size_t Currency::difficultyBlocksCountByBlockVersion(uint8_t blockMajorVersion) const {
+  return difficultyWindowByBlockVersion(blockMajorVersion) + difficultyLagByBlockVersion(blockMajorVersion);
+}
+
 size_t Currency::blockGrantedFullRewardZoneByBlockVersion(uint8_t blockMajorVersion) const {
   if (blockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
     return m_blockGrantedFullRewardZone;
   } else if (blockMajorVersion == BLOCK_MAJOR_VERSION_2) {
-    return CryptoNote::parameters::CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V2;
+    return m_blockGrantedFullRewardZoneV2;
   } else {
-    return CryptoNote::parameters::CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1;
+    return m_blockGrantedFullRewardZoneV1;
   }
 }
 
@@ -477,6 +511,66 @@ Difficulty Currency::nextDifficulty(std::vector<uint64_t> timestamps,
   return (low + timeSpan - 1) / timeSpan;
 }
 
+Difficulty Currency::nextDifficulty(uint8_t version, std::vector<uint64_t> timestamps,
+  std::vector<Difficulty> cumulativeDifficulties) const {
+
+  size_t c_difficultyWindow = difficultyWindowByBlockVersion(version);
+  size_t c_difficultyCut = difficultyCutByBlockVersion(version);
+
+  assert(c_difficultyWindow >= 2);
+
+  if (timestamps.size() > c_difficultyWindow) {
+    timestamps.resize(c_difficultyWindow);
+    cumulativeDifficulties.resize(c_difficultyWindow);
+  }
+
+  size_t length = timestamps.size();
+  assert(length == cumulativeDifficulties.size());
+  assert(length <= c_difficultyWindow);
+  if (length <= 1) {
+    return 1;
+  }
+
+  sort(timestamps.begin(), timestamps.end());
+
+  size_t cutBegin, cutEnd;
+  assert(2 * c_difficultyCut <= c_difficultyWindow - 2);
+  if (length <= c_difficultyWindow - 2 * c_difficultyCut) {
+    cutBegin = 0;
+    cutEnd = length;
+  } else {
+    cutBegin = (length - (c_difficultyWindow - 2 * c_difficultyCut) + 1) / 2;
+    cutEnd = cutBegin + (c_difficultyWindow - 2 * c_difficultyCut);
+  }
+  assert(/*cut_begin >= 0 &&*/ cutBegin + 2 <= cutEnd && cutEnd <= length);
+  uint64_t timeSpan = timestamps[cutEnd - 1] - timestamps[cutBegin];
+  if (timeSpan == 0) {
+    timeSpan = 1;
+  }
+
+  Difficulty totalWork = cumulativeDifficulties[cutEnd - 1] - cumulativeDifficulties[cutBegin];
+  assert(totalWork > 0);
+
+  uint64_t low, high;
+  low = mul128(totalWork, m_difficultyTarget, &high);
+  if (high != 0 || std::numeric_limits<uint64_t>::max() - low < (timeSpan - 1)) {
+    return 0;
+  }
+
+  if (version == 2 && m_zawyDifficultyV2) {
+    if (high != 0) {
+      return 0;
+    }
+    uint64_t nextDiffZ = low / timeSpan;
+    if (nextDiffZ <= 100000) {
+      nextDiffZ = 100000;
+    }
+
+    return nextDiffZ;
+  }
+  return (low + timeSpan - 1) / timeSpan;  // with version
+}
+
 bool Currency::checkProofOfWorkV1(Crypto::cn_context& context, const CachedBlock& block, Difficulty currentDifficulty) const {
   if (BLOCK_MAJOR_VERSION_1 != block.getBlock().majorVersion) {
     return false;
@@ -566,12 +660,22 @@ m_moneySupply(currency.m_moneySupply),
 m_emissionSpeedFactor(currency.m_emissionSpeedFactor),
 m_rewardBlocksWindow(currency.m_rewardBlocksWindow),
 m_blockGrantedFullRewardZone(currency.m_blockGrantedFullRewardZone),
+m_blockGrantedFullRewardZoneV1(currency.m_blockGrantedFullRewardZoneV1),
+m_blockGrantedFullRewardZoneV2(currency.m_blockGrantedFullRewardZoneV2),
 m_minerTxBlobReservedSize(currency.m_minerTxBlobReservedSize),
 m_numberOfDecimalPlaces(currency.m_numberOfDecimalPlaces),
 m_coin(currency.m_coin),
 m_mininumFee(currency.m_mininumFee),
 m_defaultDustThreshold(currency.m_defaultDustThreshold),
 m_difficultyTarget(currency.m_difficultyTarget),
+//zawy
+m_difficultyWindowV1(currency.m_difficultyWindowV1),
+m_difficultyWindowV2(currency.m_difficultyWindowV2),
+m_difficultyLagV1(currency.m_difficultyLagV1),
+m_difficultyLagV2(currency.m_difficultyLagV2),
+m_difficultyCutV1(currency.m_difficultyCutV1),
+m_difficultyCutV2(currency.m_difficultyCutV2),
+m_expectedNumberOfBlocksPerDay(currency.m_expectedNumberOfBlocksPerDay),
 m_difficultyWindow(currency.m_difficultyWindow),
 m_difficultyLag(currency.m_difficultyLag),
 m_difficultyCut(currency.m_difficultyCut),
@@ -593,6 +697,9 @@ m_upgradeWindow(currency.m_upgradeWindow),
 m_blocksFileName(currency.m_blocksFileName),
 m_blockIndexesFileName(currency.m_blockIndexesFileName),
 m_txPoolFileName(currency.m_txPoolFileName),
+m_genesisBlockReward(currency.m_genesisBlockReward),
+//zawy
+m_zawyDifficultyV2(currency.m_zawyDifficultyV2),
 m_testnet(currency.m_testnet),
 genesisBlockTemplate(std::move(currency.genesisBlockTemplate)),
 cachedGenesisBlock(new CachedBlock(genesisBlockTemplate)),
@@ -614,6 +721,11 @@ CurrencyBuilder::CurrencyBuilder(Logging::ILogger& log) : m_currency(log) {
   emissionSpeedFactor(parameters::EMISSION_SPEED_FACTOR);
 
   rewardBlocksWindow(parameters::CRYPTONOTE_REWARD_BLOCKS_WINDOW);
+  //zawy
+  mandatoryTransaction(parameters::MANDATORY_TRANSACTION);
+  killHeight(parameters::KILL_HEIGHT);
+  tailEmissionReward(parameters::TAIL_EMISSION_REWARD);
+  zawyDifficultyV2(parameters::ZAWY_DIFFICULTY_V2);
   blockGrantedFullRewardZone(parameters::CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE);
   minerTxBlobReservedSize(parameters::CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE);
 

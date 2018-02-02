@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -1037,6 +1037,13 @@ uint32_t DatabaseBlockchainCache::getTopBlockIndex() const {
 
   return *topBlockIndex;
 }
+//zawy
+uint8_t DatabaseBlockchainCache::getBlockMajorVersionForHeight(uint32_t height) const {
+  UpgradeManager upgradeManager;
+  upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_2, currency.upgradeHeight(BLOCK_MAJOR_VERSION_2));
+  upgradeManager.addMajorBlockVersion(BLOCK_MAJOR_VERSION_3, currency.upgradeHeight(BLOCK_MAJOR_VERSION_3));
+  return upgradeManager.getBlockMajorVersion(height);
+}
 
 uint64_t DatabaseBlockchainCache::getCachedTransactionsCount() const {
   if (!transactionsCount) {
@@ -1126,10 +1133,12 @@ Difficulty DatabaseBlockchainCache::getDifficultyForNextBlock() const {
 
 Difficulty DatabaseBlockchainCache::getDifficultyForNextBlock(uint32_t blockIndex) const {
   assert(blockIndex <= getTopBlockIndex());
-  auto timestamps = getLastTimestamps(currency.difficultyBlocksCount(), blockIndex, UseGenesis{false});
+//zawy
+  uint8_t nextBlockMajorVersion = getBlockMajorVersionForHeight(blockIndex+1);
+  auto timestamps = getLastTimestamps(currency.difficultyBlocksCountByBlockVersion(nextBlockMajorVersion), blockIndex, UseGenesis{false});
   auto commulativeDifficulties =
-      getLastCumulativeDifficulties(currency.difficultyBlocksCount(), blockIndex, UseGenesis{false});
-  return currency.nextDifficulty(std::move(timestamps), std::move(commulativeDifficulties));
+      getLastCumulativeDifficulties(currency.difficultyBlocksCountByBlockVersion(nextBlockMajorVersion), blockIndex, UseGenesis{false});
+  return currency.nextDifficulty(nextBlockMajorVersion, std::move(timestamps), std::move(commulativeDifficulties));
 }
 
 Difficulty DatabaseBlockchainCache::getCurrentCumulativeDifficulty() const {
@@ -1200,6 +1209,10 @@ std::vector<CachedBlockInfo> DatabaseBlockchainCache::getLastDbUnits(uint32_t bl
   }
 
   uint32_t toRead = blockIndex - readFrom + 1;
+  //zawy
+  if (toRead != 0) {
+    toRead--;
+  }
   std::vector<CachedBlockInfo> units;
   units.reserve(toRead);
 

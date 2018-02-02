@@ -39,3 +39,5 @@ Release notes 0.0.1 b5
 
 - added build rainmanp7
 - remove connectivity tool rainmanp7
+- added mandatory
+- bug fixes + karbo support

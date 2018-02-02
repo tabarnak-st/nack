@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
+// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -596,7 +596,8 @@ struct COMMAND_RPC_GET_TRANSACTION_DETAILS_BY_HASHES {
 //  uint64_t UPGRADE_HEIGHT;
 //  uint64_t DIFFICULTY_CUT;
 //  uint64_t DIFFICULTY_LAG;
-  //std::string BYTECOIN_NETWORK;
+//  uint32_t MANDATORY_TRANSACTION;
+//  std::string BYTECOIN_NETWORK;
 //  std::string CRYPTONOTE_NAME;
 //  std::string GENESIS_COINBASE_TX_HEX;
 //  std::vector<std::string> CHECKPOINTS;

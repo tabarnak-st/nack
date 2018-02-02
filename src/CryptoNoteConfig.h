@@ -38,6 +38,10 @@ const uint64_t POINT                                         = UINT64_C(1000);  
 
 // MONEY_SUPPLY - total number coins to be generated
 const uint64_t MONEY_SUPPLY                                  = UINT64_C(1000000);
+const uint32_t MANDATORY_TRANSACTION                          = 0;
+const uint32_t KILL_HEIGHT                          = 0;
+const uint64_t TAIL_EMISSION_REWARD                          = 0;
+const bool ZAWY_DIFFICULTY_V2                          = 0;
 const unsigned EMISSION_SPEED_FACTOR                         = 18;
 static_assert(EMISSION_SPEED_FACTOR <= 8 * sizeof(uint64_t), "Bad EMISSION_SPEED_FACTOR");
 
@@ -58,8 +62,14 @@ const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(100);   
 const uint64_t DIFFICULTY_TARGET                             = 360; // seconds
 const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 60 * 60 / DIFFICULTY_TARGET;
 const size_t   DIFFICULTY_WINDOW                             = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY; // blocks
+const size_t   DIFFICULTY_WINDOW_V1                          = DIFFICULTY_WINDOW;
+const size_t   DIFFICULTY_WINDOW_V2                          = DIFFICULTY_WINDOW;
 const size_t   DIFFICULTY_CUT                                = 60;  // timestamps to cut after sorting
+const size_t   DIFFICULTY_CUT_V1                             = DIFFICULTY_CUT;
+const size_t   DIFFICULTY_CUT_V2                             = DIFFICULTY_CUT;
 const size_t   DIFFICULTY_LAG                                = 15;  // !!!
+const size_t   DIFFICULTY_LAG_V1                             = DIFFICULTY_LAG;
+const size_t   DIFFICULTY_LAG_V2                             = DIFFICULTY_LAG;
 static_assert(2 * DIFFICULTY_CUT <= DIFFICULTY_WINDOW - 2, "Bad DIFFICULTY_WINDOW or DIFFICULTY_CUT");
 
 const size_t   MAX_BLOCK_SIZE_INITIAL                        =  1 * 1024;
