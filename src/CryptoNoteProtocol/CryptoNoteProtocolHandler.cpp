@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
+// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -223,7 +223,7 @@ void CryptoNoteProtocolHandler::log_connections() {
 }
 
 uint32_t CryptoNoteProtocolHandler::get_current_blockchain_height() {
-  return m_core.getTopBlockIndex() + 1;
+  return m_core.getTopBlockIndex();
 }
 
 bool CryptoNoteProtocolHandler::process_payload_sync_data(const CORE_SYNC_DATA& hshd, CryptoNoteConnectionContext& context, bool is_inital) {

@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
+// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -73,6 +73,18 @@ const command_line::arg_descriptor<std::string> arg_daemon_host = { "daemon-host
 const command_line::arg_descriptor<std::string> arg_password = { "password", "Wallet password", "", true };
 const command_line::arg_descriptor<uint16_t> arg_daemon_port = { "daemon-port", "Use daemon instance at port <arg> instead of 8081", 0 };
 const command_line::arg_descriptor<uint32_t> arg_log_level = { "set_log", "", INFO, true };
+//expect block[pos]
+const command_line::arg_descriptor<uint64_t>    arg_EXPECTED_NUMBER_OF_BLOCKS_PER_DAY  = {"EXPECTED_NUMBER_OF_BLOCKS_PER_DAY", "uint64_t"};
+//mandatory
+const command_line::arg_descriptor<uint32_t> arg_MANDATORY_TRANSACTION  = {"MANDATORY_TRANSACTION", "Max transaction limit size", false};
+//zawy
+const command_line::arg_descriptor<size_t>      arg_DIFFICULTY_WINDOW_V1  = {"DIFFICULTY_WINDOW_V1", "size_t", CryptoNote::parameters::DIFFICULTY_WINDOW_V1};
+  const command_line::arg_descriptor<size_t>      arg_DIFFICULTY_WINDOW_V2  = {"DIFFICULTY_WINDOW_V2", "size_t", CryptoNote::parameters::DIFFICULTY_WINDOW_V2};
+  const command_line::arg_descriptor<size_t>      arg_DIFFICULTY_LAG_V1  = {"DIFFICULTY_LAG_V1", "size_t", CryptoNote::parameters::DIFFICULTY_LAG_V1};
+  const command_line::arg_descriptor<size_t>      arg_DIFFICULTY_LAG_V2  = {"DIFFICULTY_LAG_V2", "size_t", CryptoNote::parameters::DIFFICULTY_LAG_V2};
+  const command_line::arg_descriptor<size_t>      arg_DIFFICULTY_CUT_V1  = {"DIFFICULTY_CUT_V1", "size_t", CryptoNote::parameters::DIFFICULTY_CUT_V1};
+  const command_line::arg_descriptor<size_t>      arg_DIFFICULTY_CUT_V2  = {"DIFFICULTY_CUT_V2", "size_t", CryptoNote::parameters::DIFFICULTY_CUT_V2};
+  const command_line::arg_descriptor<size_t>      arg_DIFFICULTY_WINDOW  = {"DIFFICULTY_WINDOW", "size_t", CryptoNote::parameters::DIFFICULTY_WINDOW};
 const command_line::arg_descriptor<bool> arg_testnet = { "testnet", "Used to deploy test nets. The daemon must be launched with --testnet flag", false };
 const command_line::arg_descriptor< std::vector<std::string> > arg_command = { "command", "" };
 
@@ -1014,7 +1026,13 @@ bool simple_wallet::transfer(const std::vector<std::string> &args) {
     CryptoNote::WalletLegacyTransaction txInfo;
     m_wallet->getTransaction(tx, txInfo);
     success_msg_writer(true) << "Money successfully sent, transaction " << Common::podToHex(txInfo.hash);
-
+ //mandatory
+ if (m_currency.mandatoryTransaction()) {
+   const char* args_mining_chars[] = {};
+   std::vector<std::string> args_mining(args_mining_chars, args_mining_chars);
+   //std::vector<std::string> args_mining(2);
+   start_mining(args_mining);
+ }
     try {
       CryptoNote::WalletHelper::storeWallet(*m_wallet, m_wallet_file);
     } catch (const std::exception& e) {
@@ -1083,6 +1101,15 @@ int main(int argc, char* argv[]) {
   command_line::add_arg(desc_params, arg_daemon_port);
   command_line::add_arg(desc_params, arg_command);
   command_line::add_arg(desc_params, arg_log_level);
+  //zawy
+  command_line::add_arg(desc_params, arg_DIFFICULTY_WINDOW_V1);
+  command_line::add_arg(desc_params, arg_DIFFICULTY_WINDOW_V2);
+  command_line::add_arg(desc_params, arg_DIFFICULTY_CUT_V1);
+  command_line::add_arg(desc_params, arg_DIFFICULTY_CUT_V2);
+  command_line::add_arg(desc_params, arg_DIFFICULTY_LAG_V1);
+  command_line::add_arg(desc_params, arg_DIFFICULTY_LAG_V2);
+  command_line::add_arg(desc_params, arg_EXPECTED_NUMBER_OF_BLOCKS_PER_DAY);
+  command_line::add_arg(desc_params, arg_DIFFICULTY_WINDOW);
   command_line::add_arg(desc_params, arg_testnet);
   Tools::wallet_rpc_server::init_options(desc_params);
 

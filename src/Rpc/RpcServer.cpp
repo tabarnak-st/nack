@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
+// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -249,9 +249,9 @@ bool RpcServer::on_query_blocks(const COMMAND_RPC_QUERY_BLOCKS::request& req, CO
     res.status = "Failed to perform query";
     return false;
   }
-
-  res.start_height = startIndex + 1;
-  res.current_height = currentIndex + 1;
+  //zawy
+  res.start_height = startIndex;
+  res.current_height = currentIndex;
   res.full_offset = fullOffset;
   res.status = CORE_RPC_STATUS_OK;
   return true;
@@ -419,7 +419,8 @@ bool RpcServer::onGetTransactionHashesByPaymentId(const COMMAND_RPC_GET_TRANSACT
 //
 
 bool RpcServer::on_get_info(const COMMAND_RPC_GET_INFO::request& req, COMMAND_RPC_GET_INFO::response& res) {
-  res.height = m_core.getTopBlockIndex() + 1;
+  //zawy
+  res.height = m_core.getTopBlockIndex();
   res.difficulty = m_core.getDifficultyForNextBlock();
   res.tx_count = m_core.getBlockchainTransactionCount() - res.height; //without coinbase
   res.tx_pool_size = m_core.getPoolTransactionCount();
@@ -435,7 +436,8 @@ bool RpcServer::on_get_info(const COMMAND_RPC_GET_INFO::request& req, COMMAND_RP
 }
 
 bool RpcServer::on_get_height(const COMMAND_RPC_GET_HEIGHT::request& req, COMMAND_RPC_GET_HEIGHT::response& res) {
-  res.height = m_core.getTopBlockIndex() + 1;
+  //zawy
+  res.height = m_core.getTopBlockIndex();
   res.status = CORE_RPC_STATUS_OK;
   return true;
 }
@@ -626,7 +628,8 @@ bool RpcServer::on_submitblock(const COMMAND_RPC_SUBMITBLOCK::request& req, COMM
     NOTIFY_NEW_BLOCK::request newBlockMessage;
     newBlockMessage.b = prepareRawBlockLegacy(std::move(blockToSend));
     newBlockMessage.hop = 0;
-    newBlockMessage.current_blockchain_height = m_core.getTopBlockIndex() + 1; //+1 because previous version of core sent m_blocks.size()
+    //zawy
+    newBlockMessage.current_blockchain_height = m_core.getTopBlockIndex();
 
     m_protocol.relayBlock(newBlockMessage);
   }

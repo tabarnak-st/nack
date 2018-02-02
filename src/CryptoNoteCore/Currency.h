@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
+// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, [ ] developer
 //
 // This file is part of Bytecoin.
 //
@@ -44,11 +44,19 @@ public:
   uint64_t blockFutureTimeLimit() const { return m_blockFutureTimeLimit; }
 
   uint64_t moneySupply() const { return m_moneySupply; }
-  //uint64_t genesisBlockReward() const { return m_genesisBlockReward; }
+  uint64_t genesisBlockReward() const { return m_genesisBlockReward; }
   unsigned int emissionSpeedFactor() const { return m_emissionSpeedFactor; }
 
   size_t rewardBlocksWindow() const { return m_rewardBlocksWindow; }
+  //mandatory trans
+  uint32_t mandatoryTransaction() const { return m_mandatoryTransaction; }
+  //zawy
+  uint32_t killHeight() const { return m_killHeight; }
+  uint64_t tailEmissionReward() const { return m_tailEmissionReward; }
+  bool zawyDifficultyV2() const { return m_zawyDifficultyV2; }
   size_t blockGrantedFullRewardZone() const { return m_blockGrantedFullRewardZone; }
+  size_t blockGrantedFullRewardZoneV1() const { return m_blockGrantedFullRewardZoneV1; }
+  size_t blockGrantedFullRewardZoneV2() const { return m_blockGrantedFullRewardZoneV2; }
   size_t blockGrantedFullRewardZoneByBlockVersion(uint8_t blockMajorVersion) const;
   size_t minerTxBlobReservedSize() const { return m_minerTxBlobReservedSize; }
 
@@ -60,9 +68,21 @@ public:
 
   uint64_t difficultyTarget() const { return m_difficultyTarget; }
   size_t difficultyWindow() const { return m_difficultyWindow; }
+  //zawy
+  size_t difficultyWindowV1() const { return m_difficultyWindowV1; }
+  size_t difficultyWindowV2() const { return m_difficultyWindowV2; }
+  size_t difficultyLagV1() const { return m_difficultyLagV1; }
+  size_t difficultyLagV2() const { return m_difficultyLagV2; }
+  size_t difficultyCutV1() const { return m_difficultyCutV1; }
+  size_t difficultyCutV2() const { return m_difficultyCutV2; }
+  uint64_t expectedNumberOfBlocksPerDay() const { return m_expectedNumberOfBlocksPerDay; }
+  size_t difficultyWindowByBlockVersion(uint8_t blockMajorVersion) const;
   size_t difficultyLag() const { return m_difficultyLag; }
+  size_t difficultyLagByBlockVersion(uint8_t blockMajorVersion) const;
   size_t difficultyCut() const { return m_difficultyCut; }
+  size_t difficultyCutByBlockVersion(uint8_t blockMajorVersion) const;
   size_t difficultyBlocksCount() const { return m_difficultyWindow + m_difficultyLag; }
+  size_t difficultyBlocksCountByBlockVersion(uint8_t blockMajorVersion) const;
 
   size_t maxBlockSizeInitial() const { return m_maxBlockSizeInitial; }
   uint64_t maxBlockSizeGrowthSpeedNumerator() const { return m_maxBlockSizeGrowthSpeedNumerator; }
@@ -118,6 +138,7 @@ public:
   bool parseAmount(const std::string& str, uint64_t& amount) const;
 
   Difficulty nextDifficulty(std::vector<uint64_t> timestamps, std::vector<Difficulty> cumulativeDifficulties) const;
+  Difficulty nextDifficulty(uint8_t version, std::vector<uint64_t> timestamps, std::vector<Difficulty> cumulativeDifficulties) const;
 
   bool checkProofOfWorkV1(Crypto::cn_context& context, const CachedBlock& block, Difficulty currentDifficulty) const;
   bool checkProofOfWorkV2(Crypto::cn_context& context, const CachedBlock& block, Difficulty currentDifficulty) const;
@@ -146,11 +167,19 @@ private:
   uint64_t m_blockFutureTimeLimit;
 
   uint64_t m_moneySupply;
-  //uint64_t m_genesisBlockReward;
+  uint64_t m_genesisBlockReward;
   unsigned int m_emissionSpeedFactor;
 
   size_t m_rewardBlocksWindow;
+  //mandatory
+  uint32_t m_mandatoryTransaction;
+  //zawy
+  uint32_t m_killHeight;
+  uint64_t m_tailEmissionReward;
+  bool m_zawyDifficultyV2;
   size_t m_blockGrantedFullRewardZone;
+  size_t m_blockGrantedFullRewardZoneV1;
+  size_t m_blockGrantedFullRewardZoneV2;
   size_t m_minerTxBlobReservedSize;
 
   size_t m_numberOfDecimalPlaces;
@@ -160,6 +189,13 @@ private:
   uint64_t m_defaultDustThreshold;
 
   uint64_t m_difficultyTarget;
+  size_t m_difficultyWindowV1;
+  size_t m_difficultyWindowV2;
+  size_t m_difficultyLagV1;
+  size_t m_difficultyLagV2;
+  size_t m_difficultyCutV1;
+  size_t m_difficultyCutV2;
+  uint64_t m_expectedNumberOfBlocksPerDay;
   size_t m_difficultyWindow;
   size_t m_difficultyLag;
   size_t m_difficultyCut;
@@ -234,7 +270,15 @@ public:
   CurrencyBuilder& emissionSpeedFactor(unsigned int val);
 
   CurrencyBuilder& rewardBlocksWindow(size_t val) { m_currency.m_rewardBlocksWindow = val; return *this; }
+  //mandatory
+  CurrencyBuilder& mandatoryTransaction(uint8_t val) { m_currency.m_mandatoryTransaction = val; return *this; }
+  //zawy
+  CurrencyBuilder& killHeight(uint32_t val) { m_currency.m_killHeight = val; return *this; }
+  CurrencyBuilder& tailEmissionReward(uint64_t val) { m_currency.m_tailEmissionReward = val; return *this; }
+  CurrencyBuilder& zawyDifficultyV2(bool val) { m_currency.m_zawyDifficultyV2 = val; return *this; }
   CurrencyBuilder& blockGrantedFullRewardZone(size_t val) { m_currency.m_blockGrantedFullRewardZone = val; return *this; }
+  CurrencyBuilder& blockGrantedFullRewardZoneV1(size_t val) { m_currency.m_blockGrantedFullRewardZoneV1 = val; return *this; }
+  CurrencyBuilder& blockGrantedFullRewardZoneV2(size_t val) { m_currency.m_blockGrantedFullRewardZoneV2 = val; return *this; }
   CurrencyBuilder& minerTxBlobReservedSize(size_t val) { m_currency.m_minerTxBlobReservedSize = val; return *this; }
 
   CurrencyBuilder& numberOfDecimalPlaces(size_t val);
@@ -243,6 +287,14 @@ public:
   CurrencyBuilder& defaultDustThreshold(uint64_t val) { m_currency.m_defaultDustThreshold = val; return *this; }
 
   CurrencyBuilder& difficultyTarget(uint64_t val) { m_currency.m_difficultyTarget = val; return *this; }
+  //zawy
+  CurrencyBuilder& difficultyWindowV1(size_t val) { m_currency.m_difficultyWindowV1 = val; return *this; }
+  CurrencyBuilder& difficultyWindowV2(size_t val) { m_currency.m_difficultyWindowV2 = val; return *this; }
+  CurrencyBuilder& difficultyLagV1(size_t val) { m_currency.m_difficultyLagV1 = val; return *this; }
+  CurrencyBuilder& difficultyLagV2(size_t val) { m_currency.m_difficultyLagV2 = val; return *this; }
+  CurrencyBuilder& difficultyCutV1(size_t val) { m_currency.m_difficultyCutV1 = val; return *this; }
+  CurrencyBuilder& difficultyCutV2(size_t val) { m_currency.m_difficultyCutV2 = val; return *this; }
+  CurrencyBuilder& expectedNumberOfBlocksPerDay(uint64_t val) { m_currency.m_expectedNumberOfBlocksPerDay = val; return *this; }
   CurrencyBuilder& difficultyWindow(size_t val);
   CurrencyBuilder& difficultyLag(size_t val) { m_currency.m_difficultyLag = val; return *this; }
   CurrencyBuilder& difficultyCut(size_t val) { m_currency.m_difficultyCut = val; return *this; }
