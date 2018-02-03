@@ -41,3 +41,6 @@ Release notes 0.0.1 b5
 - remove connectivity tool rainmanp7
 - added mandatory
 - bug fixes + karbo support
+- added new monsty as contibutor
+- added branch notetoken
+- remove old beta4 branch
