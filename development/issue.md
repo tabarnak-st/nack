@@ -4,4 +4,7 @@
 - /root/coins/DirhamCli/src/BlockchainExplorer/BlockchainExplorer.cpp:149:1: error: ‘CryptoNote::BlockchainExplorer::database’ is initialized with itself [-Werror=init-self]
  BlockchainExplorer::BlockchainExplorer(INode& node, Logging::ILogger& logger) :
  ^~~~~~~~~~~~~~~~~~
-
+#All GCC - home/.[yourcoinfolder]
+- failed to handle Notify_Request_Chain
+#All GCC - daemon
+- Error:tcplistener

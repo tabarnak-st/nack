@@ -14,6 +14,3 @@ A : yes for master. we still develop for develop tree for fixed bug last time on
 
 Q : error make
 A : try follow up installation here~
-
-Q : failed to handle Notify_Request_Chain
-A : this problem when you have new block chain. so to do this need carefully. go to .[yourprojectcoin] @home and remove blocks.bin and blocksindex.bin. try run and build again.
