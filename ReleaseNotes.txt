@@ -44,3 +44,4 @@ Release notes 0.0.1 b5
 - added new monsty as contibutor
 - added branch notetoken
 - remove old beta4 branch
+- added export key
