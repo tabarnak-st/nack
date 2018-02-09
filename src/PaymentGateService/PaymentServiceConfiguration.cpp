@@ -1,19 +1,10 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
-//
-// This file is part of Bytecoin.
-//
-// Bytecoin is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Bytecoin is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
+// Copyright (c) 2011-2017 The Cryptonote developers
+// Copyright (c) 2014-2017 XDN developers
+// Copyright (c) 2016-2017 BXC developers
+// Copyright (c) 2017 Royalties developers
+// Copyright (c) 2018 [ ] developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "PaymentServiceConfiguration.h"
 
@@ -32,8 +23,7 @@ Configuration::Configuration() {
   daemonize = false;
   registerService = false;
   unregisterService = false;
-  containerPassword = "";
-  logFile = "walletd.log";
+  logFile = "payment_gate.log";
   testnet = false;
   printAddresses = false;
   logLevel = Logging::INFO;
@@ -45,6 +35,8 @@ void Configuration::initOptions(boost::program_options::options_description& des
   desc.add_options()
       ("bind-address", po::value<std::string>()->default_value("0.0.0.0"), "payment service bind address")
       ("bind-port", po::value<uint16_t>()->default_value(8070), "payment service bind port")
+      ("rpc-user", po::value<std::string>()->default_value(""), "username to use the payment service. If authorization is not required, leave it empty")
+      ("rpc-password", po::value<std::string>()->default_value(""), "password to use the payment service. If authorization is not required, leave it empty")
       ("container-file,w", po::value<std::string>(), "container file")
       ("container-password,p", po::value<std::string>(), "container password")
       ("generate-container,g", "generate new container file with one wallet and exit")
@@ -104,6 +96,14 @@ void Configuration::init(const boost::program_options::variables_map& options) {
     bindPort = options["bind-port"].as<uint16_t>();
   }
 
+  if (options.count("rpc-user") != 0 && !options["rpc-user"].defaulted()) {
+    rpcUser = options["rpc-user"].as<std::string>();
+  }
+
+  if (options.count("rpc-password") != 0 && !options["rpc-password"].defaulted()) {
+    rpcPassword = options["rpc-password"].as<std::string>();
+  }
+
   if (options.count("container-file") != 0) {
     containerFile = options["container-file"].as<std::string>();
   }
@@ -121,8 +121,8 @@ void Configuration::init(const boost::program_options::variables_map& options) {
   }
 
   if (!registerService && !unregisterService) {
-    if (containerFile.empty()) {
-      throw ConfigurationError("container-file parameter are required");
+    if (containerFile.empty() || containerPassword.empty()) {
+      throw ConfigurationError("Both container-file and container-password parameters are required");
     }
   }
 }

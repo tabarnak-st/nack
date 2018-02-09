@@ -1,19 +1,10 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
-//
-// This file is part of Bytecoin.
-//
-// Bytecoin is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Bytecoin is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
+// Copyright (c) 2011-2017 The Cryptonote developers
+// Copyright (c) 2014-2017 XDN developers
+// Copyright (c) 2016-2017 BXC developers
+// Copyright (c) 2017 Royalties developers
+// Copyright (c) 2018 [ ] developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #pragma once
 
@@ -95,7 +86,7 @@ namespace CryptoNote
       stopped(false) {
     }
 
-    P2pConnectionContext(P2pConnectionContext&& ctx) : 
+    P2pConnectionContext(P2pConnectionContext&& ctx) :
       CryptoNoteConnectionContext(std::move(ctx)),
       context(ctx.context),
       peerId(ctx.peerId),
@@ -144,8 +135,6 @@ namespace CryptoNote
     size_t get_outgoing_connections_count();
 
     CryptoNote::PeerlistManager& getPeerlistManager() { return m_peerlist; }
-    std::vector<NetworkAddress> get_seed_nodes(){return m_seed_nodes;}
-    boost::uuids::uuid get_network_id(){return m_network_id;}
 
   private:
 
@@ -155,6 +144,7 @@ namespace CryptoNote
     int handle_handshake(int command, COMMAND_HANDSHAKE::request& arg, COMMAND_HANDSHAKE::response& rsp, P2pConnectionContext& context);
     int handle_timed_sync(int command, COMMAND_TIMED_SYNC::request& arg, COMMAND_TIMED_SYNC::response& rsp, P2pConnectionContext& context);
     int handle_ping(int command, COMMAND_PING::request& arg, COMMAND_PING::response& rsp, P2pConnectionContext& context);
+
 #ifdef ALLOW_DEBUG_COMMANDS
     int handle_get_stat_info(int command, COMMAND_REQUEST_STAT_INFO::request& arg, COMMAND_REQUEST_STAT_INFO::response& rsp, P2pConnectionContext& context);
     int handle_get_network_state(int command, COMMAND_REQUEST_NETWORK_STATE::request& arg, COMMAND_REQUEST_NETWORK_STATE::response& rsp, P2pConnectionContext& context);
@@ -196,14 +186,14 @@ namespace CryptoNote
     bool make_new_connection_from_peerlist(bool use_white_list);
     bool try_to_connect_and_handshake_with_new_peer(const NetworkAddress& na, bool just_take_peerlist = false, uint64_t last_seen_stamp = 0, bool white = true);
     bool is_peer_used(const PeerlistEntry& peer);
-    bool is_addr_connected(const NetworkAddress& peer);  
+    bool is_addr_connected(const NetworkAddress& peer);
     bool try_ping(basic_node_data& node_data, P2pConnectionContext& context);
     bool make_expected_connections_count(bool white_list, size_t expected_connections);
     bool is_priority_node(const NetworkAddress& na);
 
     bool connect_to_peerlist(const std::vector<NetworkAddress>& peers);
 
-    bool parse_peers_and_add_to_container(const boost::program_options::variables_map& vm, 
+    bool parse_peers_and_add_to_container(const boost::program_options::variables_map& vm,
       const command_line::arg_descriptor<std::vector<std::string> > & arg, std::vector<NetworkAddress>& container);
 
     //debug functions
@@ -219,7 +209,7 @@ namespace CryptoNote
     void onIdle();
     void timedSyncLoop();
     void timeoutLoop();
-    
+
     template<typename T>
     void safeInterrupt(T& obj);
 

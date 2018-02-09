@@ -1,19 +1,10 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
-//
-// This file is part of Bytecoin.
-//
-// Bytecoin is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Bytecoin is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
+// Copyright (c) 2011-2017 The Cryptonote developers
+// Copyright (c) 2014-2017 XDN developers
+// Copyright (c) 2016-2017 BXC developers
+// Copyright (c) 2017 Royalties developers
+// Copyright (c) 2018 [ ] developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "WalletUnconfirmedTransactions.h"
 #include "WalletLegacy/WalletLegacySerialization.h"
@@ -37,13 +28,31 @@ WalletUnconfirmedTransactions::WalletUnconfirmedTransactions(uint64_t uncofirmed
 
 bool WalletUnconfirmedTransactions::serialize(ISerializer& s) {
   s(m_unconfirmedTxs, "transactions");
+  s(m_createdDeposits, "unconfirmedCreatedDeposits");
+  s(m_spentDeposits, "unconfirmedSpentDeposits");
+
   if (s.type() == ISerializer::INPUT) {
     collectUsedOutputs();
   }
+
+  return true;
+}
+
+bool WalletUnconfirmedTransactions::deserializeV1(ISerializer& s) {
+  s(m_unconfirmedTxs, "transactions");
+
+  if (s.type() == ISerializer::INPUT) {
+    collectUsedOutputs();
+  }
+
   return true;
 }
 
 bool WalletUnconfirmedTransactions::findTransactionId(const Hash& hash, TransactionId& id) {
+  return findUnconfirmedTransactionId(hash, id) || findUnconfirmedDepositSpendingTransactionId(hash, id);
+}
+
+bool WalletUnconfirmedTransactions::findUnconfirmedTransactionId(const Crypto::Hash& hash, TransactionId& id) {
   auto it = m_unconfirmedTxs.find(hash);
   if (it == m_unconfirmedTxs.end()) {
     return false;
@@ -53,18 +62,45 @@ bool WalletUnconfirmedTransactions::findTransactionId(const Hash& hash, Transact
   return true;
 }
 
+bool WalletUnconfirmedTransactions::findUnconfirmedDepositSpendingTransactionId(const Crypto::Hash& hash, TransactionId& id) {
+  auto it = m_spentDeposits.find(hash);
+  if (it == m_spentDeposits.end()) {
+    return false;
+  }
+
+  id = it->second.transactionId;
+  return true;
+}
+
 void WalletUnconfirmedTransactions::erase(const Hash& hash) {
+  eraseUnconfirmedTransaction(hash) || eraseDepositSpendingTransaction(hash);
+}
+
+bool WalletUnconfirmedTransactions::eraseUnconfirmedTransaction(const Crypto::Hash& hash) {
   auto it = m_unconfirmedTxs.find(hash);
   if (it == m_unconfirmedTxs.end()) {
-    return;
+    return false;
   }
 
   deleteUsedOutputs(it->second.usedOutputs);
   m_unconfirmedTxs.erase(it);
+
+  return true;
+}
+
+bool WalletUnconfirmedTransactions::eraseDepositSpendingTransaction(const Crypto::Hash& hash) {
+  auto it = m_spentDeposits.find(hash);
+  if (it == m_spentDeposits.end()) {
+    return false;
+  }
+
+  m_spentDeposits.erase(it);
+
+  return true;
 }
 
 void WalletUnconfirmedTransactions::add(const Transaction& tx, TransactionId transactionId, 
-  uint64_t amount, const std::list<TransactionOutputInformation>& usedOutputs) {
+  uint64_t amount, const std::vector<TransactionOutputInformation>& usedOutputs) {
 
   UnconfirmedTransferDetails& utd = m_unconfirmedTxs[getObjectHash(tx)];
 
@@ -91,6 +127,49 @@ void WalletUnconfirmedTransactions::updateTransactionId(const Hash& hash, Transa
   if (it != m_unconfirmedTxs.end()) {
     it->second.transactionId = id;
   }
+}
+
+void WalletUnconfirmedTransactions::addCreatedDeposit(DepositId id, uint64_t totalAmount) {
+  m_createdDeposits[id] = totalAmount;
+}
+
+void WalletUnconfirmedTransactions::addDepositSpendingTransaction(const Hash& transactionHash, const UnconfirmedSpentDepositDetails& details) {
+  assert(m_spentDeposits.count(transactionHash) == 0);
+  m_spentDeposits.emplace(transactionHash, details);
+}
+
+void WalletUnconfirmedTransactions::eraseCreatedDeposit(DepositId id) {
+  m_createdDeposits.erase(id);
+}
+
+uint64_t WalletUnconfirmedTransactions::countCreatedDepositsSum() const {
+  uint64_t sum = 0;
+
+  for (const auto& kv: m_createdDeposits) {
+    sum += kv.second;
+  }
+
+  return sum;
+}
+
+uint64_t WalletUnconfirmedTransactions::countSpentDepositsProfit() const {
+  uint64_t sum = 0;
+
+  for (const auto& kv: m_spentDeposits) {
+    sum += kv.second.depositsSum - kv.second.fee;
+  }
+
+  return sum;
+}
+
+uint64_t WalletUnconfirmedTransactions::countSpentDepositsTotalAmount() const {
+  uint64_t sum = 0;
+
+  for (const auto& kv: m_spentDeposits) {
+    sum += kv.second.depositsSum;
+  }
+
+  return sum;
 }
 
 uint64_t WalletUnconfirmedTransactions::countUnconfirmedOutsAmount() const {

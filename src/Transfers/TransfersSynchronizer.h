@@ -1,19 +1,10 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
-//
-// This file is part of Bytecoin.
-//
-// Bytecoin is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Bytecoin is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
+// Copyright (c) 2011-2017 The Cryptonote developers
+// Copyright (c) 2014-2017 XDN developers
+// Copyright (c) 2016-2017 BXC developers
+// Copyright (c) 2017 Royalties developers
+// Copyright (c) 2018 [ ] developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #pragma once
 
@@ -26,8 +17,6 @@
 #include <memory>
 #include <cstring>
 
-#include "Logging/LoggerRef.h"
-
 namespace CryptoNote {
 class Currency;
 }
@@ -39,7 +28,7 @@ class INode;
 
 class TransfersSyncronizer : public ITransfersSynchronizer, public IBlockchainConsumerObserver {
 public:
-  TransfersSyncronizer(const CryptoNote::Currency& currency, Logging::ILogger& logger, IBlockchainSynchronizer& sync, INode& node);
+  TransfersSyncronizer(const CryptoNote::Currency& currency, IBlockchainSynchronizer& sync, INode& node);
   virtual ~TransfersSyncronizer();
 
   void initTransactionPool(const std::unordered_set<Crypto::Hash>& uncommitedTransactions);
@@ -59,8 +48,6 @@ public:
   virtual void load(std::istream& in) override;
 
 private:
-  Logging::LoggerRef m_logger;
-
   // map { view public key -> consumer }
   typedef std::unordered_map<Crypto::PublicKey, std::unique_ptr<TransfersConsumer>> ConsumersContainer;
   ConsumersContainer m_consumers;

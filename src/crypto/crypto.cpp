@@ -1,19 +1,9 @@
-// Copyright (c) 2012-2018, The CryptoNote developers, The Bytecoin developers, [ ] developer
-//
-// This file is part of Bytecoin.
-//
-// Bytecoin is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Bytecoin is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
+// Copyright (c) 2011-2017 The Cryptonote developers
+// Copyright (c) 2014-2017 XDN developers
+// Copyright (c) 2016-2017 BXC developers
+// Copyright (c) 2017 Royalties developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <alloca.h>
 #include <cassert>
@@ -298,7 +288,7 @@ namespace Crypto {
     ge_p1p1_to_p3(&res, &point2);
   }
 
-KeyImage crypto_ops::scalarmultKey(const KeyImage & P, const KeyImage & a) {
+  KeyImage crypto_ops::scalarmultKey(const KeyImage & P, const KeyImage & a) {
     ge_p3 A;
     ge_p2 R;
     // maybe use assert instead?
@@ -414,7 +404,7 @@ KeyImage crypto_ops::scalarmultKey(const KeyImage & P, const KeyImage & a) {
 
   bool crypto_ops::check_ring_signature(const Hash &prefix_hash, const KeyImage &image,
     const PublicKey *const *pubs, size_t pubs_count,
-    const Signature *sig, bool checkKeyImage) {
+    const Signature *sig) {
     size_t i;
     ge_p3 image_unp;
     ge_dsmp image_pre;
@@ -429,9 +419,6 @@ KeyImage crypto_ops::scalarmultKey(const KeyImage & P, const KeyImage & a) {
       return false;
     }
     ge_dsm_precomp(image_pre, &image_unp);
-    if (checkKeyImage && ge_check_subgroup_precomp_vartime(image_pre) != 0) {
-      return false;
-    }
     sc_0(reinterpret_cast<unsigned char*>(&sum));
     buf->h = prefix_hash;
     for (i = 0; i < pubs_count; i++) {

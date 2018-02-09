@@ -1,23 +1,14 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers, [ ] developer
-//
-// This file is part of Bytecoin.
-//
-// Bytecoin is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Bytecoin is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
+// Copyright (c) 2011-2017 The Cryptonote developers
+// Copyright (c) 2014-2017 XDN developers
+// Copyright (c) 2016-2017 BXC developers
+// Copyright (c) 2017 Royalties developers
+// Copyright (c) 2018 [ ] developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #pragma once
 
 namespace CryptoNote
 {
-  const static boost::uuids::uuid BYTECOIN_NETWORK = { { 0x09 ,0x10, 0x01, 0x11 , 0x11, 0x00 , 0x01, 0x01, 0x10, 0x11, 0x00, 0x12, 0x10, 0x11, 0x01, 0x10} }; //Bender's nightmare
+  const static boost::uuids::uuid CRYPTONOTE_NETWORK = { { 0x3E, 0x5E, 0x31, 0x23, 0x15, 0xA6, 0x72, 0x5A, 0x3B, 0x70, 0x4E, 0x7C, 0x28, 0x5D, 0x63, 0x7E } };
 }
