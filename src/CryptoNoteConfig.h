@@ -33,8 +33,9 @@ const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT            = 60 * 60 * 2;
 
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW             = 60;
 
-//coin ico
+//coin ico & coin
 const uint64_t POINT                                         = UINT64_C(1000);        // pow(10, 3)
+const uint64_t COIN                                           = UINT64_C(1000000);     // pow(10, 6)
 
 // MONEY_SUPPLY - total number coins to be generated
 const uint64_t MONEY_SUPPLY                                  = UINT64_C(1000000);
@@ -44,10 +45,6 @@ const uint64_t TAIL_EMISSION_REWARD                          = 0;
 const bool ZAWY_DIFFICULTY_V2                          = 0;
 const unsigned EMISSION_SPEED_FACTOR                         = 18;
 static_assert(EMISSION_SPEED_FACTOR <= 8 * sizeof(uint64_t), "Bad EMISSION_SPEED_FACTOR");
-
-//premine
-const uint64_t COIN                                           = UINT64_C(1000000);     // pow(10, 6)
-const uint64_t GENESIS_BLOCK_REWARD	                      = (UINT64_C(18000)* parameters::COIN); // 1.8 trillion premine
 
 const size_t   CRYPTONOTE_REWARD_BLOCKS_WINDOW               = 100;
 const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE     = 100000; //size of block (bytes) after which reward for block calculated using block size

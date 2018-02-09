@@ -50,3 +50,4 @@ Release notes 0.0.1 b6
 
 - ruby bug remove branch
 - scalarmultikey added
+- remove unnecesary premine
