@@ -45,3 +45,17 @@ Release notes 0.0.1 b5
 - added branch notetoken
 - remove old beta4 branch
 - added export key
+
+Release notes 0.0.1 b6
+
+- ruby bug remove branch
+- scalarmultikey added
+- remove unnecesary premine
+
+Jump to
+
+Release notes 0.1.1 -Ruby Version
+
+- fixed ICO,Premine, and Security Issue[Thank XDN Team]
+- cryptotoken Fixed
+- cleanup uneccesary files

@@ -1,19 +1,10 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
-//
-// This file is part of Bytecoin.
-//
-// Bytecoin is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Bytecoin is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
+// Copyright (c) 2011-2017 The Cryptonote developers
+// Copyright (c) 2014-2017 XDN developers
+// Copyright (c) 2016-2017 BXC developers
+// Copyright (c) 2017 Royalties developers
+// Copyright (c) 2018 [ ] developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "WalletLegacySerializer.h"
 
@@ -28,17 +19,33 @@
 #include "CryptoNoteCore/CryptoNoteSerialization.h"
 #include "WalletLegacy/WalletUserTransactionsCache.h"
 #include "Wallet/WalletErrors.h"
-#include "Wallet/WalletUtils.h"
 #include "WalletLegacy/KeysStorage.h"
 
 using namespace Common;
+
+namespace {
+
+const uint32_t WALLET_SERIALIZATION_VERSION = 2;
+
+bool verifyKeys(const Crypto::SecretKey& sec, const Crypto::PublicKey& expected_pub) {
+  Crypto::PublicKey pub;
+  bool r = Crypto::secret_key_to_public_key(sec, pub);
+  return r && expected_pub == pub;
+}
+
+void throwIfKeysMissmatch(const Crypto::SecretKey& sec, const Crypto::PublicKey& expected_pub) {
+  if (!verifyKeys(sec, expected_pub))
+    throw std::system_error(make_error_code(CryptoNote::error::WRONG_PASSWORD));
+}
+
+}
 
 namespace CryptoNote {
 
 WalletLegacySerializer::WalletLegacySerializer(CryptoNote::AccountBase& account, WalletUserTransactionsCache& transactionsCache) :
   account(account),
   transactionsCache(transactionsCache),
-  walletSerializationVersion(1)
+  walletSerializationVersion(WALLET_SERIALIZATION_VERSION)
 {
 }
 
@@ -59,7 +66,7 @@ void WalletLegacySerializer::serialize(std::ostream& stream, const std::string& 
   std::string plain = plainArchive.str();
   std::string cipher;
 
-  Crypto::chacha8_iv iv = encrypt(plain, password, cipher);
+  Crypto::chacha_iv iv = encrypt(plain, password, cipher);
 
   uint32_t version = walletSerializationVersion;
   StdOutputStream output(stream);
@@ -86,14 +93,14 @@ void WalletLegacySerializer::saveKeys(CryptoNote::ISerializer& serializer) {
   keys.serialize(serializer, "keys");
 }
 
-Crypto::chacha8_iv WalletLegacySerializer::encrypt(const std::string& plain, const std::string& password, std::string& cipher) {
-  Crypto::chacha8_key key;
+Crypto::chacha_iv WalletLegacySerializer::encrypt(const std::string& plain, const std::string& password, std::string& cipher) {
+  Crypto::chacha_key key;
   Crypto::cn_context context;
   Crypto::generate_chacha8_key(context, password, key);
 
   cipher.resize(plain.size());
 
-  Crypto::chacha8_iv iv = Crypto::rand<Crypto::chacha8_iv>();
+  Crypto::chacha_iv iv = Crypto::rand<Crypto::chacha_iv>();
   Crypto::chacha8(plain.data(), plain.size(), key, iv, &cipher[0]);
 
   return iv;
@@ -109,7 +116,7 @@ void WalletLegacySerializer::deserialize(std::istream& stream, const std::string
   uint32_t version;
   serializerEncrypted(version, "version");
 
-  Crypto::chacha8_iv iv;
+  Crypto::chacha_iv iv;
   serializerEncrypted(iv, "iv");
 
   std::string cipher;
@@ -124,10 +131,10 @@ void WalletLegacySerializer::deserialize(std::istream& stream, const std::string
   CryptoNote::BinaryInputStreamSerializer serializer(decryptedStream);
 
   loadKeys(serializer);
-  throwIfKeysMismatch(account.getAccountKeys().viewSecretKey, account.getAccountKeys().address.viewPublicKey);
+  throwIfKeysMissmatch(account.getAccountKeys().viewSecretKey, account.getAccountKeys().address.viewPublicKey);
 
   if (account.getAccountKeys().spendSecretKey != NULL_SECRET_KEY) {
-    throwIfKeysMismatch(account.getAccountKeys().spendSecretKey, account.getAccountKeys().address.spendPublicKey);
+    throwIfKeysMissmatch(account.getAccountKeys().spendSecretKey, account.getAccountKeys().address.spendPublicKey);
   } else {
     if (!Crypto::check_key(account.getAccountKeys().address.spendPublicKey)) {
       throw std::system_error(make_error_code(CryptoNote::error::WRONG_PASSWORD));
@@ -139,14 +146,18 @@ void WalletLegacySerializer::deserialize(std::istream& stream, const std::string
   serializer(detailsSaved, "has_details");
 
   if (detailsSaved) {
-    serializer(transactionsCache, "details");
+    if (version == 1) {
+      transactionsCache.deserializeLegacyV1(serializer);
+    } else {
+      serializer(transactionsCache, "details");
+    }
   }
 
   serializer.binary(cache, "cache");
 }
 
-void WalletLegacySerializer::decrypt(const std::string& cipher, std::string& plain, Crypto::chacha8_iv iv, const std::string& password) {
-  Crypto::chacha8_key key;
+void WalletLegacySerializer::decrypt(const std::string& cipher, std::string& plain, Crypto::chacha_iv iv, const std::string& password) {
+  Crypto::chacha_key key;
   Crypto::cn_context context;
   Crypto::generate_chacha8_key(context, password, key);
 

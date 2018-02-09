@@ -1,19 +1,10 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
-//
-// This file is part of Bytecoin.
-//
-// Bytecoin is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Bytecoin is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
+// Copyright (c) 2011-2017 The Cryptonote developers
+// Copyright (c) 2014-2017 XDN developers
+// Copyright (c) 2016-2017 BXC developers
+// Copyright (c) 2017 Royalties developers
+// Copyright (c) 2018 [ ] developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #pragma once
 
@@ -51,31 +42,52 @@ struct TransactionDestinationEntry {
   TransactionDestinationEntry(uint64_t amount, const AccountPublicAddress &addr) : amount(amount), addr(addr) {}
 };
 
+struct tx_message_entry
+{
+  std::string message;
+  bool encrypt;
+  AccountPublicAddress addr;
+};
 
 bool constructTransaction(
   const AccountKeys& senderAccountKeys,
   const std::vector<TransactionSourceEntry>& sources,
   const std::vector<TransactionDestinationEntry>& destinations,
-  std::vector<uint8_t> extra, Transaction& transaction, uint64_t unlock_time, Logging::ILogger& log);
+  const std::vector<tx_message_entry>& messages,
+  uint64_t ttl, std::vector<uint8_t> extra, Transaction& transaction, uint64_t unlock_time, Logging::ILogger& log);
 
+inline bool constructTransaction(
+  const AccountKeys& sender_account_keys,
+  const std::vector<TransactionSourceEntry>& sources,
+  const std::vector<TransactionDestinationEntry>& destinations,
+  std::vector<uint8_t> extra, Transaction& tx, uint64_t unlock_time, Logging::ILogger& log) {
+
+  return constructTransaction(sender_account_keys, sources, destinations, std::vector<tx_message_entry>(), 0, extra, tx, unlock_time, log);
+}
 
 bool is_out_to_acc(const AccountKeys& acc, const KeyOutput& out_key, const Crypto::PublicKey& tx_pub_key, size_t keyIndex);
 bool is_out_to_acc(const AccountKeys& acc, const KeyOutput& out_key, const Crypto::KeyDerivation& derivation, size_t keyIndex);
 bool lookup_acc_outs(const AccountKeys& acc, const Transaction& tx, const Crypto::PublicKey& tx_pub_key, std::vector<size_t>& outs, uint64_t& money_transfered);
 bool lookup_acc_outs(const AccountKeys& acc, const Transaction& tx, std::vector<size_t>& outs, uint64_t& money_transfered);
-bool get_tx_fee(const Transaction& tx, uint64_t & fee);
-uint64_t get_tx_fee(const Transaction& tx);
 bool generate_key_image_helper(const AccountKeys& ack, const Crypto::PublicKey& tx_public_key, size_t real_output_index, KeyPair& in_ephemeral, Crypto::KeyImage& ki);
-bool getInputsMoneyAmount(const Transaction& tx, uint64_t& money);
-bool checkInputTypesSupported(const TransactionPrefix& tx);
-bool checkOutsValid(const TransactionPrefix& tx, std::string* error = nullptr);
-bool checkMoneyOverflow(const TransactionPrefix &tx);
-bool checkInputsOverflow(const TransactionPrefix &tx);
-bool checkOutsOverflow(const TransactionPrefix& tx);
-uint64_t get_outs_money_amount(const Transaction& tx);
 std::string short_hash_str(const Crypto::Hash& h);
 
-std::vector<uint32_t> relativeOutputOffsetsToAbsolute(const std::vector<uint32_t>& off);
+bool get_block_hashing_blob(const Block& b, BinaryArray& blob);
+bool get_aux_block_header_hash(const Block& b, Crypto::Hash& res);
+bool get_block_hash(const Block& b, Crypto::Hash& res);
+Crypto::Hash get_block_hash(const Block& b);
+bool get_block_longhash(Crypto::cn_context &context, const Block& b, Crypto::Hash& res);
+bool get_inputs_money_amount(const Transaction& tx, uint64_t& money);
+uint64_t get_outs_money_amount(const Transaction& tx);
+bool check_inputs_types_supported(const TransactionPrefix& tx);
+bool check_outs_valid(const TransactionPrefix& tx, std::string* error = 0);
+bool checkMultisignatureInputsDiff(const TransactionPrefix& tx);
+
+bool check_money_overflow(const TransactionPrefix& tx);
+bool check_outs_overflow(const TransactionPrefix& tx);
+bool check_inputs_overflow(const TransactionPrefix& tx);
+uint32_t get_block_height(const Block& b);
+std::vector<uint32_t> relative_output_offsets_to_absolute(const std::vector<uint32_t>& off);
 std::vector<uint32_t> absolute_output_offsets_to_relative(const std::vector<uint32_t>& off);
 
 
@@ -111,5 +123,9 @@ void decompose_amount_into_digits(uint64_t amount, uint64_t dust_threshold, cons
     dust_handler(dust);
   }
 }
+
+void get_tx_tree_hash(const std::vector<Crypto::Hash>& tx_hashes, Crypto::Hash& h);
+Crypto::Hash get_tx_tree_hash(const std::vector<Crypto::Hash>& tx_hashes);
+Crypto::Hash get_tx_tree_hash(const Block& b);
 
 }
