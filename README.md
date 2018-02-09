@@ -11,3 +11,6 @@ Dirham Global.
 
 ## What is zEtA?
 zEtA is devices with multi system organizer with more stable for world used. Like payment, video, music and another stuff used zEtA as device futures.
+
+##After for Cryptonote Technology
+Soon we keep on track Cryptonote for free people learn crypto
