@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/FndNur1Labs/DirhamCli.svg?branch=master)](https://travis-ci.org/FndNur1Labs/DirhamCli/)
 
+![Settings Window](http://decaf.kouhi.me/lovelive/images/4/46/Ruby_smile_r918_t.jpg)
+
 # Dirham
 From bottom sea to come outside
 
@@ -14,3 +16,6 @@ zEtA is devices with multi system organizer with more stable for world used. Lik
 
 ##After for Cryptonote Technology
 Soon we keep on track Cryptonote for free people learn crypto
+
+##Ruby Version
+Ruby version is release for more expert and easy way with XDN team behind cryptonote token. And more change on files.
