@@ -35,10 +35,11 @@ Ruby Version 2 is generate for new bytecoin!this will improved code and sync wor
 - installation for installation updates and document installed
 
 ## Contribute Official
-- Cryptonote Developer
-- XDN Developer
-- Royalties Developer
+- Cryptonote Developer : https://github.com/amjuarez
+- XDN Developer : https://github.com/xdn-project
+- Royalties Developer : https://github.com/Vetro7
 - Kohaku Developer
+- Bytecoin Developer[New] : https://github.com/bcndev
 
 ## Fundrising and Trademark
 - You can copy modify files without change original "cryptonote'
