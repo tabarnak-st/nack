@@ -27,3 +27,9 @@ Ruby Version 2 is generate for new bytecoin!this will improved code and sync wor
 - Develop : this for who contribute the works. anyone can do
 - Develop-V2 : this for Ruby 2 Focused from bytecoin Fork[new one]
 - Travis : this is for travis updates
+
+### Document
+- building for wrote on building updates
+- contrib for wrote who contribute
+- F.A.Q for frequently ask question
+- installation for installation updates and document installed
