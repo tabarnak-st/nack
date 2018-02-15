@@ -2,7 +2,7 @@
 
 ![Settings Window](http://decaf.kouhi.me/lovelive/images/4/46/Ruby_smile_r918_t.jpg)
 
-# Dirham
+## Dirham
 From bottom sea to come outside
 
 ## What is Dirham?
@@ -19,3 +19,11 @@ Soon we keep on track Cryptonote for free people learn crypto
 
 ##Ruby Version
 Ruby version is release for more expert and easy way with XDN team behind cryptonote token. And more change on files.
+
+##Ruby V2
+Ruby Version 2 is generate for new bytecoin!this will improved code and sync work~
+
+###Development tree
+- Develop : this for who contribute the works. anyone can do
+- Develop-V2 : this for Ruby 2 Focused from bytecoin Fork[new one]
+- Travis : this is for travis updates
