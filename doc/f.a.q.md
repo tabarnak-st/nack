@@ -1,4 +1,4 @@
-#This F.A.Q
+# This F.A.Q
 
 Q : bug on Inodes
 A : removed all try git pull origin develop. and try downgrade libboost to 1.55
