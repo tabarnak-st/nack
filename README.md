@@ -33,3 +33,19 @@ Ruby Version 2 is generate for new bytecoin!this will improved code and sync wor
 - contrib for wrote who contribute
 - F.A.Q for frequently ask question
 - installation for installation updates and document installed
+
+## Contribute Official
+- Cryptonote Developer : https://github.com/amjuarez
+- XDN Developer : https://github.com/xdn-project
+- Royalties Developer : https://github.com/Vetro7
+- Kohaku Developer
+- Bytecoin Developer[New] : https://github.com/bcndev
+
+## Fundrising and Trademark
+- You can copy modify files without change original "cryptonote'
+- Cryptonote Family not like argue for greedy personal
+- This is open-source so no one claim tech we family
+- For personal contract this can do. For personal project not here. We help together
+
+
+## [  ] Kohaku Team Developer && Cryptonote Family

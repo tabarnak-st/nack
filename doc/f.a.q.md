@@ -1,4 +1,4 @@
-#This F.A.Q
+# This F.A.Q
 
 Q : bug on Inodes
 A : removed all try git pull origin develop. and try downgrade libboost to 1.55
@@ -14,3 +14,6 @@ A : yes for master. we still develop for develop tree for fixed bug last time on
 
 Q : error make
 A : try follow up installation here~
+
+Q : where link full to how edit this?
+A : go here for full info cryptonote. https://cryptonotestarter.org/inner.html

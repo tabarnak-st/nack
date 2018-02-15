@@ -59,3 +59,4 @@ Release notes 0.1.1 -Ruby Version
 - fixed ICO,Premine, and Security Issue[Thank XDN Team]
 - cryptotoken Fixed
 - cleanup uneccesary files
+- removed cryptonote-token branch[useless-already merge]
