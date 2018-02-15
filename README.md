@@ -14,16 +14,16 @@ Dirham Global.
 ## What is zEtA?
 zEtA is devices with multi system organizer with more stable for world used. Like payment, video, music and another stuff used zEtA as device futures.
 
-##After for Cryptonote Technology
+## After for Cryptonote Technology
 Soon we keep on track Cryptonote for free people learn crypto
 
-##Ruby Version
+## Ruby Version
 Ruby version is release for more expert and easy way with XDN team behind cryptonote token. And more change on files.
 
-##Ruby V2
+## Ruby V2
 Ruby Version 2 is generate for new bytecoin!this will improved code and sync work~
 
-###Development tree
+### Development tree
 - Develop : this for who contribute the works. anyone can do
 - Develop-V2 : this for Ruby 2 Focused from bytecoin Fork[new one]
 - Travis : this is for travis updates
