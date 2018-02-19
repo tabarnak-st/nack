@@ -14,6 +14,12 @@ Dirham Global.
 ## What is zEtA?
 zEtA is devices with multi system organizer with more stable for world used. Like payment, video, music and another stuff used zEtA as device futures.
 
+## Evolution After
+After Ruby V1 release the changing name after consensus. Did for whole cryptonight algos by CryptonoteFamily as Evolution Technology
+
+## Project CryptonoteEvo
+Cryptonote Evolution aka Evo is provided who wanna studied more about Cryptonote. More or less Cryptonote begin to move to peak off. Team Cryptonote Evo Unofficial said need awaken of Cryptonote Technology for more flat and more flexible way.
+
 ## After for Cryptonote Technology
 Soon we keep on track Cryptonote for free people learn crypto
 
