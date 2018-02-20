@@ -14,6 +14,12 @@ Dirham Global.
 ## What is zEtA?
 zEtA is devices with multi system organizer with more stable for world used. Like payment, video, music and another stuff used zEtA as device futures.
 
+## Evolution After
+After Ruby V1 release the changing name after consensus. Did for whole cryptonight algos by CryptonoteFamily as Evolution Technology
+
+## Project CryptonoteEvo
+Cryptonote Evolution aka Evo is provided who wanna studied more about Cryptonote. More or less Cryptonote begin to move to peak off. Team Cryptonote Evo Unofficial said need awaken of Cryptonote Technology for more flat and more flexible way.
+
 ## After for Cryptonote Technology
 Soon we keep on track Cryptonote for free people learn crypto
 
@@ -33,3 +39,19 @@ Ruby Version 2 is generate for new bytecoin!this will improved code and sync wor
 - contrib for wrote who contribute
 - F.A.Q for frequently ask question
 - installation for installation updates and document installed
+
+## Contribute Official
+- Cryptonote Developer : https://github.com/amjuarez
+- XDN Developer : https://github.com/xdn-project
+- Royalties Developer : https://github.com/Vetro7
+- Kohaku Developer
+- Bytecoin Developer[New] : https://github.com/bcndev
+
+## Fundrising and Trademark
+- You can copy modify files without change original "cryptonote'
+- Cryptonote Family not like argue for greedy personal
+- This is open-source so no one claim tech we family
+- For personal contract this can do. For personal project not here. We help together
+
+
+## [  ] Kohaku Team Developer && Cryptonote Family

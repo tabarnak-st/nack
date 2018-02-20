@@ -1,4 +1,4 @@
-#guide build by rainmanp7[https://github.com/rainmanp7]
+# guide build by rainmanp7[https://github.com/rainmanp7]
 You have 2 things which u will do first.
 You will compile the daemon 2 times.
 1st time you configure the cryptonoteconfig.h file and place a seed node ip address pointing at the 2nd one you will make.
